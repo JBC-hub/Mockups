@@ -289,6 +289,7 @@
   <button class="nav-tab"            onclick="showTab('flow-hu')">📦 Flow HU</button>
   <button class="nav-tab"            onclick="showTab('flow-bin')">🗂️ Flow Emplacement</button>
   <button class="nav-tab"            onclick="showTab('confirm')">✅ Confirmation</button>
+  <button class="nav-tab"            onclick="showTab('masse')">📦📦 HU en masse</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════ -->
@@ -1310,6 +1311,398 @@
     <b>Double confirmation</b> pour toute opération irréversible (scrap, mise au rebut) : l'opérateur doit confirmer deux fois, avec un rappel visuel fort du risque.<br/>
     <b>Erreurs SAP claires</b> : pas de code d'erreur technique brut — le message est traduit en termes métier avec une action corrective proposée directement depuis l'écran d'erreur.<br/>
     <b>Succès avec référence document</b> : le numéro du document EWM créé est affiché immédiatement pour traçabilité.
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 6 : FLOW HU EN MASSE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-masse" class="section">
+  <div class="section-title">📦📦 Flow HU en masse — Sorties multiples en une seule opération</div>
+  <div class="section-sub">Deux sous-modes : scan série (HUs éparpillées) · sélection par emplacement (HUs regroupées)</div>
+
+  <!-- CHOIX DU SOUS-MODE -->
+  <div class="screen-group-title">🏠 Choix du mode masse</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Sous-mode — Scan série vs Sélection par zone</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sorties Diverses</span><span class="wifi">📶</span></div>
+          <div class="app-header">
+            <h2>Sortie de stock</h2>
+            <div class="sub">Choisir le mode de sortie</div>
+          </div>
+          <div class="mode-grid">
+            <div style="font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px;">Par quoi commencer ?</div>
+            <div class="mode-btn">
+              <div class="mode-icon">📦</div>
+              <div class="mode-text">
+                <h4>Depuis une HU</h4>
+                <p>Scanner une seule unité de gestion</p>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+            <div class="mode-btn">
+              <div class="mode-icon blue">🗂️</div>
+              <div class="mode-text">
+                <h4>Depuis un emplacement</h4>
+                <p>Choisir dans le stock d'un emplacement</p>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+            <div class="divider" style="margin-top:4px;"><span>Mode masse</span></div>
+            <div class="mode-btn" style="border-color:var(--adgi);background:var(--adgi-light);">
+              <div class="mode-icon" style="background:#ede7f6;">📦📦</div>
+              <div class="mode-text">
+                <h4>Scan série de HUs</h4>
+                <p>Scanner plusieurs HUs à la suite — même mouvement pour toutes</p>
+              </div>
+              <div class="chevron" style="color:var(--adgi);">›</div>
+            </div>
+            <div class="mode-btn" style="border-color:#0057B8;background:#e3f2fd;">
+              <div class="mode-icon blue" style="background:#bbdefb;">🗂️📦</div>
+              <div class="mode-text">
+                <h4>HUs par emplacement</h4>
+                <p>Voir toutes les HUs d'une zone et cocher celles à sortir</p>
+              </div>
+              <div class="chevron" style="color:#0057B8;">›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Accueil commun aux 4 modes</span>
+        <span class="gain-tag">✓ Modes masse bien identifiés</span>
+      </div>
+    </div>
+
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Compteur de session en cours</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie Masse · En cours</span><span>3 HUs</span></div>
+          <div class="app-header">
+            <h2>Session de sortie</h2>
+            <div class="sub">Scan série · 3 HUs scannées</div>
+          </div>
+          <!-- Barre de progression session -->
+          <div style="background:#f5f7fa;padding:10px 14px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;">
+            <div style="flex:1;">
+              <div style="font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">Session en cours</div>
+              <div style="font-size:13px;font-weight:700;color:var(--adgi);margin-top:2px;">3 HUs · 72 unités</div>
+            </div>
+            <div style="background:var(--adgi);color:white;border-radius:10px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">Terminer →</div>
+          </div>
+          <!-- Liste HUs scannées -->
+          <div class="card-list">
+            <div class="stock-item selected" style="background:#f0fff4;border-color:#2dc653;">
+              <div style="font-size:16px;">✅</div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045231</div>
+                <div class="mat-desc">Gants de protection · 24 PR</div>
+              </div>
+              <div style="background:#2dc653;color:white;border-radius:8px;padding:2px 8px;font-size:10px;">OK</div>
+            </div>
+            <div class="stock-item selected" style="background:#f0fff4;border-color:#2dc653;">
+              <div style="font-size:16px;">✅</div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045232</div>
+                <div class="mat-desc">Gants de protection · 24 PR</div>
+              </div>
+              <div style="background:#2dc653;color:white;border-radius:8px;padding:2px 8px;font-size:10px;">OK</div>
+            </div>
+            <div class="stock-item selected" style="background:#f0fff4;border-color:#2dc653;">
+              <div style="font-size:16px;">✅</div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045240</div>
+                <div class="mat-desc">Câble 2,5mm² · Lot BT-99 · 50 ML</div>
+              </div>
+              <div style="background:#2dc653;color:white;border-radius:8px;padding:2px 8px;font-size:10px;">OK</div>
+            </div>
+          </div>
+          <!-- Bouton scan suivant -->
+          <div style="padding:10px 12px;">
+            <div class="big-scan" style="padding:14px;margin:0;">
+              <div style="font-size:22px;margin-bottom:4px;">📷</div>
+              <h3 style="font-size:13px;">Scanner la prochaine HU</h3>
+              <p>ou taper le numéro manuellement</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Compteur visible en temps réel</span>
+        <span class="gain-tag">✓ Scan continu sans interruption</span>
+        <span class="gain-tag">✓ Suppression HU possible</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Mode Scan Série — Accumuler les HUs avant de valider</strong>
+    L'opérateur scanne les HUs une par une (flux continu, pas besoin de confirmer entre chaque scan).
+    Un compteur en temps réel affiche le nombre de HUs accumulées et le total d'unités.
+    Il peut supprimer une HU de la liste en cas de scan erroné (balayage vers la gauche ou bouton ✕).
+    Quand toutes les HUs sont scannées, il tape "Terminer" et renseigne le mouvement + paramètres <b>une seule fois</b> pour l'ensemble.
+  </div>
+
+  <!-- MODE SCAN SÉRIE : PARAMÈTRES GROUPÉS -->
+  <div class="screen-group-title">⚙️ Scan Série — Paramètres groupés &amp; Récapitulatif masse</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Paramètres uniques pour toutes les HUs</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie Masse · Paramètres</span><span>3 HUs</span></div>
+          <div class="app-header">
+            <div class="back">‹ Liste HUs</div>
+            <h2>Paramètres communs</h2>
+            <div class="sub">Appliqués aux 3 HUs scannées</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HUs</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">2</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Récap.</div></div>
+          </div>
+          <!-- Résumé des HUs -->
+          <div style="background:var(--adgi-light);border:1.5px solid var(--adgi-mid);border-radius:12px;margin:10px 12px;padding:10px 12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--adgi);margin-bottom:6px;">📦 3 HUs dans la session</div>
+            <div style="font-size:11px;color:#555;line-height:1.8;">
+              HU-45231 · HU-45232 · HU-45240<br/>
+              <span style="font-weight:700;color:#1a1a2e;">72 unités au total</span> (articles mixtes)
+            </div>
+          </div>
+          <!-- Type de mouvement -->
+          <div style="padding:8px 12px 4px;font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;">Type de sortie (pour toutes)</div>
+          <div class="mvt-grid" style="padding-top:4px;">
+            <div class="mvt-btn selected">
+              <div class="mvt-icon cc">🏢</div>
+              <div><h4>Centre de coût</h4><p>Consommation interne · ZCC</p></div>
+              <div class="mvt-radio sel">✓</div>
+            </div>
+            <div class="mvt-btn">
+              <div class="mvt-icon scrap">🗑️</div>
+              <div><h4>Mise au rebut</h4><p>Destruction · ZRB</p></div>
+              <div class="mvt-radio"></div>
+            </div>
+          </div>
+          <!-- CC -->
+          <div class="form-section" style="padding-top:4px;">
+            <div class="field-group">
+              <div class="field-label">Centre de coût *</div>
+              <div style="display:flex;gap:8px;">
+                <input class="field-input" style="flex:1;" value="CC-4100" />
+                <button class="scan-btn" style="padding:8px 14px;">📷</button>
+              </div>
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn-primary">Récapitulatif ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Récapitulatif masse avant POST</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie Masse · Récap.</span><span>✓ Prêt</span></div>
+          <div class="app-header">
+            <div class="back">‹ Paramètres</div>
+            <h2>Récapitulatif global</h2>
+            <div class="sub">3 HUs · 1 mouvement · Vérifier avant POST</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HUs</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">3</div><div class="step-lbl">Récap.</div></div>
+          </div>
+          <!-- Récap global -->
+          <div class="recap-section">
+            <div class="recap-row highlight">
+              <span class="r-label">📦 HUs</span>
+              <span class="r-val">3 unités</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🔄 Mouvement</span>
+              <span class="r-val" style="display:flex;align-items:center;gap:6px;"><span style="background:#e3f2fd;color:#0057B8;border-radius:8px;padding:2px 8px;font-size:11px;">ZCC</span> CC-4100</span>
+            </div>
+          </div>
+          <!-- Détail par HU -->
+          <div style="padding:6px 12px 4px;font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;">Détail par HU</div>
+          <div style="padding:0 12px;display:flex;flex-direction:column;gap:6px;flex:1;overflow-y:auto;">
+            <div style="background:#f5f7fa;border-radius:10px;padding:8px 12px;font-size:11px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-weight:700;">HU-0000045231</div>
+                <div style="color:#888;">Gants · ZONE-A-04</div>
+              </div>
+              <div style="font-weight:700;color:var(--adgi);">24 PR</div>
+            </div>
+            <div style="background:#f5f7fa;border-radius:10px;padding:8px 12px;font-size:11px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-weight:700;">HU-0000045232</div>
+                <div style="color:#888;">Gants · ZONE-A-04</div>
+              </div>
+              <div style="font-weight:700;color:var(--adgi);">24 PR</div>
+            </div>
+            <div style="background:#f5f7fa;border-radius:10px;padding:8px 12px;font-size:11px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-weight:700;">HU-0000045240</div>
+                <div style="color:#888;">Câble 2,5mm² · ZONE-B-12</div>
+              </div>
+              <div style="font-weight:700;color:var(--adgi);">50 ML</div>
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn-success" style="font-size:15px;">✅ Valider les 3 sorties</button>
+            <button class="btn-secondary">✏️ Modifier</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 3 étapes seulement pour N HUs</strong>
+    Quelle que soit la quantité de HUs scannées (3, 10, 50…), l'opérateur ne passe que par 3 écrans : liste, paramètres, récap.
+    Le récapitulatif dépliable liste chaque HU individuellement pour permettre une dernière vérification avant le POST en lot.
+    Un seul document de mouvement SAP est généré pour l'ensemble.
+  </div>
+
+  <!-- MODE PAR EMPLACEMENT -->
+  <div class="screen-group-title">🗂️ Mode HUs par emplacement — Sélection en zone</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label flow-label">Mode zone · Étape 1 — Scan emplacement + liste des HUs</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie Masse · Zone</span><span>ZONE-A-04</span></div>
+          <div class="app-header">
+            <div class="back">‹ Accueil</div>
+            <h2>HUs de l'emplacement</h2>
+            <div class="sub">ZONE-A-04 · 5 HUs présentes</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Empl.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">2</div><div class="step-lbl">HUs</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Récap.</div></div>
+          </div>
+          <!-- Bin info + sélection globale -->
+          <div style="background:#e3f2fd;border-radius:12px;margin:10px 12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:14px;font-weight:800;color:#0057B8;">📍 ZONE-A-04</div>
+              <div style="font-size:11px;color:#666;margin-top:2px;">5 HUs · 3 articles différents</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <button style="background:#0057B8;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;">Tout sélect.</button>
+              <button style="background:#f5f7fa;color:#555;border:1px solid #ccd;border-radius:8px;padding:4px 12px;font-size:10px;cursor:pointer;">Tout désel.</button>
+            </div>
+          </div>
+          <!-- Liste HUs avec checkboxes -->
+          <div class="card-list">
+            <div style="background:var(--adgi-light);border:1.5px solid var(--adgi);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <div class="check-circle checked">✓</div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045231</div>
+                <div class="mat-desc">Gants de protection · 24 PR</div>
+              </div>
+              <div style="text-align:right;font-size:10px;color:#888;">Palette<br/>12 kg</div>
+            </div>
+            <div style="background:var(--adgi-light);border:1.5px solid var(--adgi);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <div class="check-circle checked">✓</div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045232</div>
+                <div class="mat-desc">Gants de protection · 24 PR</div>
+              </div>
+              <div style="text-align:right;font-size:10px;color:#888;">Palette<br/>12 kg</div>
+            </div>
+            <div style="background:#fff;border:1.5px solid #e8ecf0;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <div class="check-circle"></div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045235</div>
+                <div class="mat-desc">Casque chantier · 6 PCE</div>
+              </div>
+              <div style="text-align:right;font-size:10px;color:#888;">Carton<br/>3 kg</div>
+            </div>
+            <div style="background:#fff;border:1.5px solid #e8ecf0;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <div class="check-circle"></div>
+              <div style="flex:1;">
+                <div class="mat-num">HU-0000045238</div>
+                <div class="mat-desc">Vis inox M8 · 200 PCE</div>
+              </div>
+              <div style="text-align:right;font-size:10px;color:#888;">Bac<br/>5 kg</div>
+            </div>
+          </div>
+          <div class="action-bar" style="padding-top:4px;">
+            <button class="btn-primary">Suivant — 2 HUs sélect. ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-col">
+      <div class="comp-label flow-label">Mode zone · Résultat — Confirmation masse en zone</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar" style="background:#1a8754;"><span>✅ 2 sorties confirmées</span><span>11:02</span></div>
+          <div class="app-header" style="background:#1a8754;">
+            <h2>Sorties postées !</h2>
+            <div class="sub">2 HUs · ZONE-A-04 · CC-4100</div>
+          </div>
+          <div style="text-align:center;padding:20px 20px 12px;">
+            <div style="font-size:48px;margin-bottom:8px;">✅</div>
+            <div style="font-size:17px;font-weight:800;color:#1a8754;">2 sorties validées</div>
+            <div style="font-size:12px;color:#888;margin-top:6px;">Documents EWM créés :<br/><b style="color:#1a1a2e;">DI-2026-012848 · DI-2026-012849</b></div>
+          </div>
+          <!-- Résumé -->
+          <div style="padding:0 12px;display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#f0fff4;border:1.5px solid #2dc653;border-radius:12px;padding:10px 12px;font-size:11px;display:flex;justify-content:space-between;">
+              <div><div style="font-weight:700;">HU-0000045231</div><div style="color:#888;">Gants · 24 PR</div></div>
+              <div style="color:#1a8754;font-weight:700;">✅ Posté</div>
+            </div>
+            <div style="background:#f0fff4;border:1.5px solid #2dc653;border-radius:12px;padding:10px 12px;font-size:11px;display:flex;justify-content:space-between;">
+              <div><div style="font-weight:700;">HU-0000045232</div><div style="color:#888;">Gants · 24 PR</div></div>
+              <div style="color:#1a8754;font-weight:700;">✅ Posté</div>
+            </div>
+            <!-- HU en erreur -->
+            <div style="background:#fff3e0;border:1.5px solid #ff9800;border-radius:12px;padding:10px 12px;font-size:11px;display:flex;justify-content:space-between;align-items:center;">
+              <div><div style="font-weight:700;color:#e65100;">⚠️ HU-0000045240</div><div style="color:#888;">Câble · Stock bloqué</div></div>
+              <div style="color:#e65100;font-weight:700;font-size:10px;">ERREUR</div>
+            </div>
+          </div>
+          <div style="margin:8px 12px;background:#fff3e0;border-radius:10px;padding:10px;font-size:11px;color:#e65100;">
+            ⚠️ 1 HU en erreur (stock bloqué). Les 2 autres ont bien été postées.
+          </div>
+          <div class="action-bar">
+            <button class="btn-primary" style="background:#e65100;font-size:13px;">🔧 Résoudre l'erreur HU-45240</button>
+            <button class="btn-success" style="font-size:13px;">📤 Nouvelle session</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Succès partiel géré</span>
+        <span class="gain-tag">✓ Numéros doc. EWM affichés</span>
+        <span class="gain-tag">✓ Accès direct à l'erreur</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Gestion du succès partiel en masse</strong>
+    En cas de sortie en masse, certaines HUs peuvent échouer (stock bloqué, HU déjà sortie, etc.) pendant que d'autres sont postées.
+    L'écran de résultat distingue clairement les HUs postées (vert ✅) des HUs en erreur (orange ⚠️) avec un accès direct au détail de l'erreur pour chaque HU.
+    Les sorties réussies ne sont pas annulées — seules les HUs en erreur nécessitent une action corrective.
   </div>
 </div>
 
