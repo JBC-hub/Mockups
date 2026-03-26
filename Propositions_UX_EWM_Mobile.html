@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propositions UX – Écrans Mobilité EWM</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+  /* ── PAGE LAYOUT ── */
+  .page-header {
+    background: linear-gradient(135deg, #0057B8 0%, #003d82 100%);
+    color: white; padding: 32px 40px;
+  }
+  .page-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .page-header p  { margin-top: 6px; font-size: 14px; opacity: .85; }
+  .badge { display:inline-block; background:rgba(255,255,255,.18);
+           border-radius:20px; padding:3px 12px; font-size:12px; margin-top:8px; }
+
+  /* ── NAV TABS ── */
+  .nav-tabs { display:flex; gap:4px; background:#fff; padding:12px 40px 0;
+              border-bottom:2px solid #e8ecf0; overflow-x:auto; }
+  .nav-tab  { padding:10px 20px; font-size:13px; font-weight:600; cursor:pointer;
+              border-radius:8px 8px 0 0; color:#666; transition:all .2s;
+              white-space:nowrap; border:none; background:none; }
+  .nav-tab:hover  { background:#f0f4ff; color:#0057B8; }
+  .nav-tab.active { background:#0057B8; color:white; }
+
+  /* ── SECTION ── */
+  .section { display:none; padding:40px; }
+  .section.active { display:block; }
+  .section-title { font-size:20px; font-weight:700; color:#0057B8; margin-bottom:6px; }
+  .section-sub   { font-size:13px; color:#666; margin-bottom:28px; }
+
+  /* ── INTRO CARD ── */
+  .principles { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:40px; }
+  .principle  { background:#fff; border-radius:12px; padding:20px; border-left:4px solid #0057B8;
+                box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  .principle .icon { font-size:24px; margin-bottom:10px; }
+  .principle h4    { font-size:13px; font-weight:700; color:#0057B8; margin-bottom:4px; }
+  .principle p     { font-size:12px; color:#555; line-height:1.5; }
+
+  /* ── COMPARISON GRID ── */
+  .comparison { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px; }
+  .comp-label { font-size:11px; font-weight:700; text-transform:uppercase;
+                letter-spacing:1px; color:#999; margin-bottom:10px; }
+  .comp-label.new-label { color:#0057B8; }
+  .improvement-note { background:#e8f4fd; border-left:4px solid #0057B8;
+                      border-radius:0 8px 8px 0; padding:14px 18px;
+                      font-size:13px; color:#1a3a5c; margin-top:16px; line-height:1.6; }
+  .improvement-note strong { display:block; margin-bottom:4px; color:#0057B8; font-size:12px; }
+
+  /* ── PDA FRAME ── */
+  .pda { width:300px; min-height:560px; background:#1e2432;
+         border-radius:28px; padding:10px;
+         box-shadow:0 8px 32px rgba(0,0,0,.25); margin:0 auto; }
+  .pda-screen { background:#fff; border-radius:20px; overflow:hidden;
+                min-height:540px; display:flex; flex-direction:column; }
+
+  /* ── STATUS BAR ── */
+  .status-bar { background:#0057B8; color:white; padding:6px 14px;
+                display:flex; justify-content:space-between; align-items:center;
+                font-size:10px; }
+  .status-bar .wifi { opacity:.8; }
+
+  /* ── APP HEADER ── */
+  .app-header { background:#0057B8; color:white; padding:10px 14px 14px; }
+  .app-header .back { font-size:11px; opacity:.8; margin-bottom:2px; cursor:pointer; display:flex; align-items:center; gap:4px; }
+  .app-header h2 { font-size:16px; font-weight:700; }
+  .app-header .sub { font-size:11px; opacity:.75; margin-top:2px; }
+  .app-header-green  { background:#1a8754; }
+  .app-header-orange { background:#d9600a; }
+  .app-header-purple { background:#6f42c1; }
+  .app-header-teal   { background:#0d7a78; }
+
+  /* ── QUICK FILTER BAR ── */
+  .quick-filters { display:flex; gap:6px; padding:10px 12px; background:#f5f7fa;
+                   overflow-x:auto; }
+  .qf-btn { flex-shrink:0; padding:6px 14px; border-radius:20px; border:1.5px solid #dde3ea;
+             background:#fff; font-size:11px; font-weight:600; color:#444; cursor:pointer; }
+  .qf-btn.active { background:#0057B8; color:#fff; border-color:#0057B8; }
+  .qf-btn.urgent { background:#fff3e8; color:#d9600a; border-color:#f0a060; }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap { padding:10px 12px; background:#fff; border-bottom:1px solid #eee; }
+  .search-box  { display:flex; align-items:center; gap:8px; background:#f0f2f7;
+                 border-radius:10px; padding:8px 12px; }
+  .search-box span { font-size:14px; }
+  .search-box input { border:none; background:transparent; font-size:12px; flex:1; outline:none; color:#333; }
+  .scan-btn { background:#0057B8; color:#fff; border:none; border-radius:8px;
+              padding:8px 12px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; }
+
+  /* ── DELIVERY CARD ── */
+  .card-list { padding:10px 12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .del-card  { background:#fff; border-radius:12px; padding:12px;
+               border:1.5px solid #e8ecf0; box-shadow:0 1px 4px rgba(0,0,0,.06);
+               cursor:pointer; transition:all .15s; }
+  .del-card:hover    { border-color:#0057B8; box-shadow:0 2px 8px rgba(0,87,184,.12); }
+  .del-card.urgent   { border-left:4px solid #e63946; background:#fff8f8; }
+  .del-card.warning  { border-left:4px solid #f4a261; background:#fffaf5; }
+  .del-card.ok       { border-left:4px solid #2dc653; background:#f6fff9; }
+  .del-card .row     { display:flex; justify-content:space-between; align-items:center; }
+  .del-card .doc-num { font-size:13px; font-weight:700; color:#1a1a2e; }
+  .del-card .supplier{ font-size:11px; color:#666; margin-top:2px; }
+  .del-card .badge-s { font-size:10px; padding:3px 8px; border-radius:10px; font-weight:600; }
+  .badge-late   { background:#ffe0e0; color:#c0392b; }
+  .badge-today  { background:#fff3cd; color:#856404; }
+  .badge-done   { background:#d4edda; color:#155724; }
+  .badge-partial{ background:#d6e8ff; color:#1a5fa8; }
+  .progress-mini { margin-top:8px; }
+  .progress-mini .label { display:flex; justify-content:space-between; font-size:10px; color:#888; margin-bottom:3px; }
+  .progress-bar  { height:4px; background:#e8ecf0; border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:2px; }
+  .fill-green  { background:#2dc653; }
+  .fill-orange { background:#f4a261; }
+  .fill-red    { background:#e63946; }
+  .fill-blue   { background:#0057B8; }
+  .del-card .icons-row { display:flex; gap:6px; margin-top:8px; }
+  .act-icon { width:28px; height:28px; border-radius:8px; display:flex;
+              align-items:center; justify-content:center; font-size:13px;
+              border:1.5px solid #e0e5ee; background:#f8f9fc; }
+  .act-icon.done   { background:#d4edda; border-color:#b8ddc4; }
+  .act-icon.active { background:#d6e8ff; border-color:#a8c8f0; }
+  .act-icon.pending{ background:#fff3cd; border-color:#f0d870; }
+
+  /* ── BIG SCAN AREA ── */
+  .big-scan { margin:16px 12px; background:linear-gradient(135deg,#0057B8,#003d82);
+              border-radius:16px; padding:20px; text-align:center; color:white; cursor:pointer; }
+  .big-scan .scan-icon { font-size:36px; margin-bottom:8px; }
+  .big-scan h3 { font-size:14px; font-weight:700; }
+  .big-scan p  { font-size:11px; opacity:.8; margin-top:4px; }
+
+  /* ── FORM FIELDS ── */
+  .form-section { padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .field-group  { display:flex; flex-direction:column; gap:4px; }
+  .field-label  { font-size:10px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.5px; }
+  .field-val    { font-size:13px; font-weight:600; color:#1a1a2e; padding:8px 12px;
+                  background:#f5f7fa; border-radius:8px; border:1.5px solid #e0e5ee; }
+  .field-input  { font-size:13px; padding:8px 12px; background:#fff; border-radius:8px;
+                  border:2px solid #0057B8; outline:none; color:#1a1a2e; }
+  .field-highlight { background:#e8f4fd; border-color:#0057B8; }
+
+  /* ── QUANTITY BIG ── */
+  .qty-display { text-align:center; padding:20px 12px; }
+  .qty-display .qty-big { font-size:48px; font-weight:800; color:#0057B8; line-height:1; }
+  .qty-display .qty-unit { font-size:14px; color:#888; margin-top:4px; }
+  .qty-btns { display:flex; gap:8px; padding:0 12px 16px; }
+  .qty-btn  { flex:1; padding:14px; border-radius:12px; border:none; font-size:20px;
+              font-weight:700; cursor:pointer; }
+  .qty-minus { background:#ffe0e0; color:#c0392b; }
+  .qty-plus  { background:#d4edda; color:#155724; }
+  .qty-full  { background:#0057B8; color:white; font-size:12px; border-radius:12px; padding:14px 8px; }
+
+  /* ── ACTION BUTTONS ── */
+  .action-bar  { padding:12px; display:flex; flex-direction:column; gap:8px; margin-top:auto; }
+  .btn-primary { background:#0057B8; color:white; border:none; border-radius:12px;
+                 padding:16px; font-size:14px; font-weight:700; cursor:pointer;
+                 display:flex; align-items:center; justify-content:center; gap:8px; }
+  .btn-secondary { background:#f0f4ff; color:#0057B8; border:1.5px solid #0057B8;
+                   border-radius:12px; padding:14px; font-size:13px; font-weight:600;
+                   cursor:pointer; text-align:center; }
+  .btn-success { background:#1a8754; color:white; border:none; border-radius:12px;
+                 padding:16px; font-size:14px; font-weight:700; cursor:pointer; }
+  .btn-danger  { background:#e63946; color:white; border:none; border-radius:12px;
+                 padding:14px; font-size:13px; font-weight:700; cursor:pointer; }
+  .btn-ghost   { background:#f5f7fa; color:#555; border:none; border-radius:12px;
+                 padding:12px; font-size:12px; cursor:pointer; text-align:center; }
+
+  /* ── STEP INDICATOR ── */
+  .steps { display:flex; align-items:center; padding:12px 16px; gap:0;
+           background:#f5f7fa; border-bottom:1px solid #e8ecf0; }
+  .step { display:flex; flex-direction:column; align-items:center; flex:1; }
+  .step .dot { width:24px; height:24px; border-radius:50%; background:#e0e5ee;
+               display:flex; align-items:center; justify-content:center;
+               font-size:10px; font-weight:700; color:#888; }
+  .step .dot.done    { background:#2dc653; color:white; }
+  .step .dot.active  { background:#0057B8; color:white; }
+  .step .step-lbl    { font-size:9px; color:#888; margin-top:4px; text-align:center; }
+  .step-line { flex:1; height:2px; background:#e0e5ee; margin-bottom:16px; }
+  .step-line.done { background:#2dc653; }
+
+  /* ── STOCK ITEM ── */
+  .stock-item { background:#fff; border-radius:12px; padding:12px 14px;
+                border:1.5px solid #e8ecf0; display:flex; align-items:center; gap:10px; }
+  .stock-item .sku { font-size:12px; font-weight:700; color:#1a1a2e; }
+  .stock-item .desc{ font-size:11px; color:#888; margin-top:2px; }
+  .stock-item .qty-pill { background:#0057B8; color:white; border-radius:20px;
+                          padding:4px 10px; font-size:12px; font-weight:700;
+                          white-space:nowrap; margin-left:auto; }
+  .stock-item.selected { border-color:#0057B8; background:#eef4ff; }
+  .check-circle { width:22px; height:22px; border-radius:50%; border:2px solid #ccc;
+                  flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .check-circle.checked { background:#0057B8; border-color:#0057B8; color:white; font-size:12px; }
+
+  /* ── TOAST / FEEDBACK ── */
+  .toast { background:#1a8754; color:white; margin:0 12px; border-radius:12px;
+           padding:12px 16px; font-size:12px; font-weight:600; display:flex;
+           align-items:center; gap:8px; }
+  .toast.error  { background:#e63946; }
+  .toast.warning{ background:#d9600a; }
+
+  /* ── SECTION DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:10px; padding:0 12px; margin:8px 0; }
+  .divider span { font-size:10px; color:#aaa; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:#e8ecf0; }
+
+  /* ── LEGEND ROW ── */
+  .legend-row { display:flex; gap:8px; padding:8px 12px; flex-wrap:wrap; }
+  .legend-item{ display:flex; align-items:center; gap:5px; font-size:10px; color:#666; }
+  .legend-dot { width:8px; height:8px; border-radius:50%; }
+
+  /* ── COMPARISON HELPERS ── */
+  .pain-tag { display:inline-flex; align-items:center; gap:4px; background:#ffe0e0;
+              color:#c0392b; border-radius:20px; padding:3px 10px; font-size:11px;
+              font-weight:600; margin:3px; }
+  .gain-tag { display:inline-flex; align-items:center; gap:4px; background:#d4edda;
+              color:#155724; border-radius:20px; padding:3px 10px; font-size:11px;
+              font-weight:600; margin:3px; }
+  .neutral  { display:inline-flex; align-items:center; gap:4px; background:#e8ecf0;
+              color:#555; border-radius:20px; padding:3px 10px; font-size:11px; margin:3px; }
+
+  /* ── OVERVIEW ── */
+  .overview-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+  .overview-card { background:#fff; border-radius:16px; padding:20px;
+                   box-shadow:0 2px 12px rgba(0,0,0,.07); border-top:4px solid #0057B8; }
+  .overview-card.green  { border-top-color:#1a8754; }
+  .overview-card.orange { border-top-color:#d9600a; }
+  .overview-card.purple { border-top-color:#6f42c1; }
+  .overview-card h3 { font-size:14px; font-weight:700; color:#1a1a2e; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .overview-card ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .overview-card li { font-size:12px; color:#444; display:flex; align-items:flex-start; gap:8px; line-height:1.5; }
+  .overview-card li::before { content:'→'; color:#0057B8; font-weight:700; flex-shrink:0; }
+  .overview-card.green li::before { color:#1a8754; }
+  .overview-card.orange li::before { color:#d9600a; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:700px){
+    .comparison { grid-template-columns:1fr; }
+    .section { padding:20px 16px; }
+    .principles { grid-template-columns:1fr 1fr; }
+  }
+
+  /* ── INVENTORY ── */
+  .count-display { background:#f0f4ff; border-radius:12px; padding:16px; margin:12px; text-align:center; }
+  .count-display .bin-id { font-size:20px; font-weight:800; color:#0057B8; }
+  .count-display .product { font-size:12px; color:#666; margin-top:4px; }
+  .count-display .expected { font-size:13px; color:#888; margin-top:6px; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav { display:flex; background:#f8f9fc; border-top:1px solid #e8ecf0; }
+  .bnav-item  { flex:1; display:flex; flex-direction:column; align-items:center;
+                padding:8px 4px; font-size:9px; color:#aaa; gap:3px; cursor:pointer; }
+  .bnav-item.active { color:#0057B8; }
+  .bnav-icon  { font-size:18px; }
+
+  /* ── SUMMARY BAR ── */
+  .summary-bar { background:#0057B8; color:white; padding:10px 14px;
+                 display:flex; justify-content:space-between; font-size:11px; }
+  .summary-bar .num { font-size:16px; font-weight:800; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>📱 Propositions UX — Écrans Mobilité EWM</h1>
+  <p>Analyse et recommandations d'amélioration pour les 4 applications mobiles</p>
+  <span class="badge">HRC Software · Mars 2026</span>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('overview')">🎯 Vue d'ensemble</button>
+  <button class="nav-tab" onclick="showTab('gr')">📦 GR Cockpit</button>
+  <button class="nav-tab" onclick="showTab('gi')">🚚 Goods Issue</button>
+  <button class="nav-tab" onclick="showTab('b2b')">↔️ Bin to Bin</button>
+  <button class="nav-tab" onclick="showTab('inv')">🔢 Inventaire</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-overview" class="section active">
+  <div class="section-title">🎯 Principes UX prioritaires</div>
+  <div class="section-sub">7 axes d'amélioration applicables à tous les écrans de mobilité</div>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="icon">📸</div>
+      <h4>Scan-First</h4>
+      <p>Le scan code-barres/QR est la première action proposée. La saisie clavier reste disponible mais discrète.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">👆</div>
+      <h4>Zones de tap XXL</h4>
+      <p>Tous les éléments interactifs ≥ 44px de hauteur. Pensé pour les gants d'entrepôt.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🎨</div>
+      <h4>Code couleur strict</h4>
+      <p>Rouge = urgent/retard · Orange = attention · Vert = OK/validé · Bleu = action en cours</p>
+    </div>
+    <div class="principle">
+      <div class="icon">⚡</div>
+      <h4>Défaut intelligent</h4>
+      <p>Pré-remplissage automatique de la quantité totale, du bin proposé et du filtre "Aujourd'hui".</p>
+    </div>
+    <div class="principle">
+      <div class="icon">✅</div>
+      <h4>Feedback immédiat</h4>
+      <p>Confirmation visuelle + son après chaque scan réussi. Message d'erreur explicite si problème.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🧭</div>
+      <h4>Navigation simplifiée</h4>
+      <p>Indicateur de progression (étapes 1/2/3…) visible en permanence. Retour arrière toujours accessible.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">📊</div>
+      <h4>Info contextuelle</h4>
+      <p>Afficher uniquement les données utiles à l'écran courant. Masquer par défaut les champs rarement utilisés.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">🔍 Synthèse par application</div>
+  <div class="section-sub">Points de friction identifiés et gains attendus</div>
+
+  <div class="overview-grid">
+    <div class="overview-card">
+      <h3>📦 GR Cockpit</h3>
+      <ul>
+        <li>Filtre "Aujourd'hui" actif par défaut → -2 taps pour démarrer</li>
+        <li>Progression packing visible sur la carte livraison (% barre)</li>
+        <li>Scan HU direct depuis la liste pour accéder instantanément au bon article</li>
+        <li>Bouton "GR tout" visible sans aller dans le menu</li>
+        <li>Écran packing : quantité totale pré-saisie, validation en 1 tap</li>
+      </ul>
+    </div>
+    <div class="overview-card green">
+      <h3>🚚 Goods Issue Cockpit</h3>
+      <ul>
+        <li>Onglets Picking / Consolidation / GI avec badges compteurs</li>
+        <li>Création de tâche en 1 tap depuis la liste de picking</li>
+        <li>Confirmation destination bin : scan suggéré en grand, texte en petit</li>
+        <li>Alerte visuelle si bin de destination différent de celui proposé</li>
+        <li>Statut livraison en code couleur dès la liste</li>
+      </ul>
+    </div>
+    <div class="overview-card orange">
+      <h3>↔️ Bin to Bin</h3>
+      <ul>
+        <li>Mémorisation du dernier mode utilisé (HU vs produit) → 0 re-sélection</li>
+        <li>Sélection du Process Type réduite aux 3 les plus utilisés + "Autres"</li>
+        <li>Quantité : bouton "Tout" proéminent pour les cas 100% (majorité)</li>
+        <li>Confirmation immédiate si le Process Type le permet (sans écran supplémentaire)</li>
+      </ul>
+    </div>
+    <div class="overview-card purple">
+      <h3>🔢 Inventaire</h3>
+      <ul>
+        <li>Scanner le bin directement depuis la liste → saut automatique au document</li>
+        <li>Écran de comptage : clavier numérique grand format centré</li>
+        <li>Comparaison quantité attendue vs saisie en temps réel</li>
+        <li>Validation en 1 tap si quantité = stock théorique (cas fréquent)</li>
+        <li>Historique rapide des bins déjà comptés sur l'écran de liste</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: GR COCKPIT -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-gr" class="section">
+  <div class="section-title">📦 GR Cockpit — Propositions d'amélioration</div>
+  <div class="section-sub">Réception marchandises · Packing · Putaway</div>
+
+  <!-- SCREEN 1 -->
+  <div class="comparison">
+    <!-- AVANT -->
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Liste des livraisons</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>EWM Mobile</span><span class="wifi">●●●</span></div>
+          <div class="app-header">
+            <h2>GR Cockpit</h2>
+          </div>
+          <!-- filtre verbose -->
+          <div style="padding:10px 12px;background:#f5f7fa;border-bottom:1px solid #eee;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <div style="background:#e0e5ee;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;">📅 Plage de dates</div>
+              <div style="background:#e0e5ee;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;">Arrivée prévue ▾</div>
+              <div style="background:#e0e5ee;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;">🔍 Filtre avancé</div>
+              <div style="background:#e0e5ee;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;">⇅ Trier</div>
+            </div>
+          </div>
+          <div style="padding:8px 12px;background:#fff;border-bottom:1px solid #eee;">
+            <div style="background:#f0f2f7;border-radius:8px;padding:6px 10px;font-size:11px;color:#999;">🔍 Rechercher…</div>
+          </div>
+          <!-- items -->
+          <div class="card-list">
+            <div class="del-card" style="border-left:none;">
+              <div class="row"><span class="doc-num">4500012345</span><span style="font-size:10px;color:#999;">Sans couleur</span></div>
+              <div class="supplier">FOURNISSEUR ALPHA</div>
+              <div class="icons-row">
+                <div class="act-icon">📦</div><div class="act-icon">✅</div><div class="act-icon">🏭</div>
+              </div>
+            </div>
+            <div class="del-card" style="border-left:none;">
+              <div class="row"><span class="doc-num">4500012346</span><span style="font-size:10px;color:#999;">Sans statut</span></div>
+              <div class="supplier">SUPPLIER BETA GMBH</div>
+              <div class="icons-row">
+                <div class="act-icon">📦</div><div class="act-icon pending">✅</div><div class="act-icon">🏭</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:10px 12px;display:flex;gap:8px;">
+            <div style="flex:1;background:#0057B8;color:#fff;padding:12px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;">Actions ▾</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Pas de filtre par défaut</span>
+        <span class="pain-tag">⚠ Icônes sans légende</span>
+        <span class="pain-tag">⚠ Pas de couleur de statut</span>
+        <span class="pain-tag">⚠ 4 filtres à configurer</span>
+      </div>
+    </div>
+
+    <!-- APRÈS -->
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Liste des livraisons</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>GR Cockpit</span><span class="wifi">📶 En ligne</span></div>
+          <div class="app-header">
+            <h2>Réception</h2>
+            <div class="sub">3 livraisons attendues aujourd'hui</div>
+          </div>
+          <div class="quick-filters">
+            <button class="qf-btn active">Aujourd'hui (3)</button>
+            <button class="qf-btn urgent">En retard (1)</button>
+            <button class="qf-btn">Cette semaine</button>
+            <button class="qf-btn">📅 Dates</button>
+          </div>
+          <div class="search-wrap">
+            <div class="search-box">
+              <span>🔍</span>
+              <input placeholder="Rechercher livraison ou fournisseur…" />
+              <button class="scan-btn">📷 Scan</button>
+            </div>
+          </div>
+          <div class="card-list">
+            <div class="del-card urgent">
+              <div class="row">
+                <span class="doc-num">4500012345</span>
+                <span class="badge-s badge-late">⏰ Retard</span>
+              </div>
+              <div class="supplier">Fournisseur Alpha · 24 colis</div>
+              <div class="progress-mini">
+                <div class="label"><span>Packing</span><span>0 / 24</span></div>
+                <div class="progress-bar"><div class="progress-fill fill-red" style="width:0%"></div></div>
+              </div>
+              <div class="icons-row" style="margin-top:8px;">
+                <div class="act-icon pending" title="Packing">📦</div>
+                <div class="act-icon" title="GR">✅</div>
+                <div class="act-icon" title="Putaway">🏭</div>
+              </div>
+            </div>
+            <div class="del-card warning">
+              <div class="row">
+                <span class="doc-num">4500012346</span>
+                <span class="badge-s badge-today">📅 Auj.</span>
+              </div>
+              <div class="supplier">Supplier Beta · 12 colis</div>
+              <div class="progress-mini">
+                <div class="label"><span>Packing</span><span>6 / 12</span></div>
+                <div class="progress-bar"><div class="progress-fill fill-orange" style="width:50%"></div></div>
+              </div>
+            </div>
+            <div class="del-card ok">
+              <div class="row">
+                <span class="doc-num">4500012347</span>
+                <span class="badge-s badge-done">✅ Packé</span>
+              </div>
+              <div class="supplier">Gamma Logistics · 8 colis</div>
+              <div class="progress-mini">
+                <div class="label"><span>Packing</span><span>8 / 8</span></div>
+                <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Filtre "Aujourd'hui" par défaut</span>
+        <span class="gain-tag">✓ Code couleur urgence</span>
+        <span class="gain-tag">✓ Barre progression visible</span>
+        <span class="gain-tag">✓ Scan rapide depuis la liste</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #1 — Filtre intelligent et statut visuel</strong>
+    Au lieu d'afficher toutes les livraisons sans tri, le filtre <b>"Aujourd'hui"</b> est actif par défaut.
+    Chaque carte indique clairement son statut (retard/en cours/terminé) via un code couleur sur le bord gauche + un badge texte + une barre de progression du packing.
+    L'opérateur identifie en 1 seconde ce qui est urgent sans lire les dates.
+  </div>
+
+  <!-- SCREEN 2 -->
+  <div class="comparison" style="margin-top:32px;">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Packing / Saisie quantité</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>EWM</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Stock selection</h2></div>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:8px;flex:1;">
+            <div style="background:#f5f7fa;border-radius:8px;padding:10px;font-size:11px;color:#666;">
+              <div>Ref: MAT-0001234</div>
+              <div>Desc: PRODUIT EXEMPLE A</div>
+              <div>Qté prévue: 50 EA</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="number" style="flex:1;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:18px;" value="50" />
+              <select style="padding:10px;border:1px solid #ccc;border-radius:8px;font-size:12px;">
+                <option>EA</option><option>KG</option>
+              </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+              <div style="background:#e0e5ee;border-radius:8px;padding:10px;text-align:center;font-size:12px;">Créer HU</div>
+              <div style="background:#e0e5ee;border-radius:8px;padding:10px;text-align:center;font-size:12px;">HU existant</div>
+            </div>
+          </div>
+          <div class="action-bar" style="padding:12px;">
+            <div style="background:#0057B8;color:#fff;padding:14px;border-radius:10px;text-align:center;font-size:13px;font-weight:600;">Suivant ›</div>
+            <div style="background:#f5f7fa;color:#555;padding:12px;border-radius:10px;text-align:center;font-size:12px;">Retour</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Qté pas pré-remplie</span>
+        <span class="pain-tag">⚠ Boutons petits</span>
+        <span class="pain-tag">⚠ Contexte peu visible</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Saisie quantité packing</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>GR · Packing</span><span>2 / 5 articles</span></div>
+          <div class="app-header">
+            <div class="back">‹ 4500012346</div>
+            <h2>Quantité à packer</h2>
+          </div>
+          <!-- steps -->
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Sélection</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">2</div><div class="step-lbl">Quantité</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">HU</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Aperçu</div></div>
+          </div>
+          <!-- product info -->
+          <div style="background:#f0f4ff;margin:10px 12px;border-radius:12px;padding:12px;">
+            <div style="font-size:11px;color:#888;">Article</div>
+            <div style="font-size:14px;font-weight:700;color:#1a1a2e;">MAT-0001234</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Produit Exemple A</div>
+          </div>
+          <!-- big qty -->
+          <div class="qty-display">
+            <div class="qty-big">50</div>
+            <div class="qty-unit">EA — Quantité totale prévue</div>
+          </div>
+          <div class="qty-btns">
+            <button class="qty-btn qty-minus">−</button>
+            <button class="qty-btn qty-full" style="flex:.6;font-size:11px;">TOUT<br/>50 EA</button>
+            <button class="qty-btn qty-plus">+</button>
+          </div>
+          <div style="display:flex;gap:8px;padding:0 12px;">
+            <div style="flex:1;background:#f0f4ff;border:2px solid #0057B8;border-radius:10px;padding:12px;text-align:center;font-size:12px;color:#0057B8;font-weight:600;">🆕 Créer HU</div>
+            <div style="flex:1;background:#f5f7fa;border:1.5px solid #dde3ea;border-radius:10px;padding:12px;text-align:center;font-size:12px;color:#555;">📦 HU existant</div>
+          </div>
+          <div class="action-bar">
+            <button class="btn-primary">Suivant — Définir HU ›</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Quantité totale pré-saisie</span>
+        <span class="gain-tag">✓ Bouton TOUT proéminent</span>
+        <span class="gain-tag">✓ Étapes visibles</span>
+        <span class="gain-tag">✓ Boutons XXL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #2 — Quantité pré-remplie + navigation par étapes</strong>
+    La quantité totale est pré-remplie automatiquement (cas le plus fréquent = réception complète).
+    Un bouton "<b>TOUT</b>" visible en grand permet la validation en 1 tap.
+    La barre d'étapes en haut de l'écran donne le contexte de progression sans avoir à mémoriser où l'on en est.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: GOODS ISSUE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-gi" class="section">
+  <div class="section-title">🚚 Goods Issue Cockpit — Propositions d'amélioration</div>
+  <div class="section-sub">Préparation picking · Consolidation · Expédition</div>
+
+  <div class="comparison">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Onglet Picking</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>EWM</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Goods Issue Cockpit</h2></div>
+          <div style="display:flex;border-bottom:1px solid #ddd;background:#f5f7fa;">
+            <div style="flex:1;padding:10px 8px;text-align:center;font-size:11px;border-bottom:2px solid #0057B8;color:#0057B8;font-weight:600;">Picking</div>
+            <div style="flex:1;padding:10px 8px;text-align:center;font-size:11px;color:#999;">Ship. Prep.</div>
+            <div style="flex:1;padding:10px 8px;text-align:center;font-size:11px;color:#999;">GI</div>
+          </div>
+          <div style="padding:8px 12px;background:#fff;border-bottom:1px solid #eee;display:flex;gap:8px;align-items:center;">
+            <div style="background:#f0f2f7;border-radius:8px;padding:6px 10px;font-size:11px;color:#999;flex:1;">🔍 Filtrer…</div>
+            <div style="padding:6px 10px;background:#e0e5ee;border-radius:8px;font-size:11px;">🔄</div>
+          </div>
+          <div style="padding:8px 12px;font-size:11px;color:#888;">Créer WTs si non générées:</div>
+          <div class="card-list" style="padding-top:0;">
+            <div class="del-card" style="border-left:none;">
+              <div class="row"><span class="doc-num">Order 4600001</span><span style="font-size:10px;color:#aaa;">Pas de statut</span></div>
+              <div class="supplier">3 lignes à préparer</div>
+            </div>
+            <div class="del-card" style="border-left:none;">
+              <div class="row"><span class="doc-num">Order 4600002</span><span style="font-size:10px;color:#aaa;">?</span></div>
+              <div class="supplier">7 lignes à préparer</div>
+            </div>
+          </div>
+          <div style="padding:12px;">
+            <div style="background:#e0e5ee;color:#555;padding:12px;border-radius:10px;text-align:center;font-size:12px;">Créer Warehouse Tasks ▾</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Onglets sans compteur</span>
+        <span class="pain-tag">⚠ Pas de priorité visible</span>
+        <span class="pain-tag">⚠ Création WT cachée</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Expédition avec onglets compteurs</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>GI Cockpit</span><span class="wifi">📶 En ligne</span></div>
+          <div class="app-header app-header-green">
+            <div class="back">‹ Retour</div>
+            <h2>Expédition</h2>
+            <div class="sub">Commande 4600001 · Client ABC</div>
+          </div>
+          <!-- tabs with badges -->
+          <div style="display:flex;background:#f5f7fa;border-bottom:2px solid #e8ecf0;">
+            <div style="flex:1;padding:10px 4px;text-align:center;border-bottom:3px solid #1a8754;">
+              <div style="font-size:11px;font-weight:700;color:#1a8754;">Picking</div>
+              <div style="background:#e63946;color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;display:inline-block;margin-top:2px;">5</div>
+            </div>
+            <div style="flex:1;padding:10px 4px;text-align:center;">
+              <div style="font-size:11px;color:#888;">Consolid.</div>
+              <div style="background:#f4a261;color:#fff;border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;display:inline-block;margin-top:2px;">2</div>
+            </div>
+            <div style="flex:1;padding:10px 4px;text-align:center;">
+              <div style="font-size:11px;color:#888;">GI</div>
+              <div style="background:#e0e5ee;color:#888;border-radius:10px;font-size:10px;font-weight:700;padding:1px 6px;display:inline-block;margin-top:2px;">0</div>
+            </div>
+          </div>
+          <!-- summary bar -->
+          <div class="summary-bar">
+            <div><div class="num">5</div>tâches à picker</div>
+            <div><div class="num">3/8</div>lignes done</div>
+            <div><div class="num">37%</div>avancement</div>
+          </div>
+          <!-- scan area -->
+          <div class="big-scan" style="margin:10px 12px;">
+            <div class="scan-icon">📷</div>
+            <h3>Scanner HU ou emplacement</h3>
+            <p>Scan pour démarrer immédiatement</p>
+          </div>
+          <div class="card-list" style="padding-top:0;">
+            <div class="del-card urgent">
+              <div class="row">
+                <span class="doc-num">A-0010 · Allée 1-B-05</span>
+                <span class="badge-s badge-late">🔥 Priorité</span>
+              </div>
+              <div class="supplier">REF-8821 · Produit X · 10 EA</div>
+              <div style="margin-top:8px;display:flex;gap:8px;">
+                <button class="btn-primary" style="flex:1;padding:10px;font-size:12px;border-radius:8px;">▶ Commencer</button>
+              </div>
+            </div>
+            <div class="del-card warning">
+              <div class="row">
+                <span class="doc-num">A-0011 · Allée 2-C-12</span>
+                <span class="badge-s badge-today">Normal</span>
+              </div>
+              <div class="supplier">REF-5530 · Produit Y · 5 EA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Badges compteurs sur onglets</span>
+        <span class="gain-tag">✓ Résumé avancement en haut</span>
+        <span class="gain-tag">✓ Scan en premier plan</span>
+        <span class="gain-tag">✓ Priorité visible</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé — Onglets avec compteurs et résumé d'avancement</strong>
+    Les onglets Picking / Consolidation / GI affichent un badge avec le nombre de tâches restantes.
+    Une barre de résumé sous les onglets donne l'avancement global en un coup d'œil.
+    La zone de scan est mise en avant pour les magasiniers qui travaillent principalement au scan.
+  </div>
+
+  <!-- CONFIRMATION WT -->
+  <div class="comparison" style="margin-top:32px;">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Confirmation WT (source bin)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>WT Confirmation</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>WT Confirmation</h2></div>
+          <div class="form-section">
+            <div class="field-group">
+              <div class="field-label">Source Storage Bin</div>
+              <div class="field-val">A-01-B-05</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Source HU</div>
+              <div class="field-val">HU-10045678</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Product</div>
+              <div class="field-val">REF-8821-PRODUIT-X</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Quantity</div>
+              <div class="field-val">10 EA</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 8px;">
+            <div style="background:#e0e5ee;padding:12px;border-radius:8px;text-align:center;font-size:11px;">Retour</div>
+            <div style="background:#0057B8;color:#fff;padding:12px;border-radius:8px;text-align:center;font-size:11px;font-weight:600;">Confirmer</div>
+          </div>
+          <div style="padding:0 12px 8px;">
+            <div style="background:#e0e5ee;padding:10px;border-radius:8px;text-align:center;font-size:11px;">◉ Actions</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Boutons trop petits</span>
+        <span class="pain-tag">⚠ Scan non visible</span>
+        <span class="pain-tag">⚠ Référence tronquée</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Confirmation tâche picking</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Picking · Tâche 3/5</span><span>✓✓⬜⬜⬜</span></div>
+          <div class="app-header app-header-green">
+            <div class="back">‹ Liste picking</div>
+            <h2>Confirmer prélèvement</h2>
+          </div>
+          <!-- scan area -->
+          <div style="background:#e8f8ef;margin:12px 12px 8px;border-radius:14px;padding:16px;text-align:center;border:2px dashed #1a8754;">
+            <div style="font-size:32px;margin-bottom:8px;">📷</div>
+            <div style="font-size:13px;font-weight:700;color:#1a8754;">Scanner le HU source</div>
+            <div style="font-size:11px;color:#555;margin-top:4px;">HU-10045678</div>
+          </div>
+          <!-- info card -->
+          <div style="background:#f0f4ff;margin:0 12px;border-radius:12px;padding:12px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <div><div style="font-size:10px;color:#888;">Emplacement</div><div style="font-size:13px;font-weight:700;color:#0057B8;">A-01-B-05</div></div>
+              <div><div style="font-size:10px;color:#888;">Quantité</div><div style="font-size:13px;font-weight:700;color:#1a1a2e;">10 EA</div></div>
+              <div style="grid-column:1/-1;"><div style="font-size:10px;color:#888;">Produit</div><div style="font-size:12px;font-weight:600;color:#1a1a2e;">REF-8821 · Produit X</div></div>
+            </div>
+          </div>
+          <!-- confirm feedback -->
+          <div class="toast" style="margin:10px 12px;">
+            <span>✅</span><span>HU pré-rempli — Vérifier et valider</span>
+          </div>
+          <div class="action-bar">
+            <button class="btn-success">✅ Confirmer prélèvement</button>
+            <button class="btn-ghost">⚠️ Signaler écart de quantité</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Zone scan proéminente</span>
+        <span class="gain-tag">✓ Infos clés en carte</span>
+        <span class="gain-tag">✓ Bouton validation XXL</span>
+        <span class="gain-tag">✓ Compteur tâches en cours</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé — Confirmation picking en 1 tap</strong>
+    La zone de scan est mise en premier plan avec un cadre vert évident.
+    Les données pré-remplies sont affichées dans une carte synthétique.
+    Le bouton "Confirmer" est XXL et vert. Un bouton secondaire discret permet de signaler un écart.
+    Le compteur de progression (Tâche 3/5) en haut de l'écran réduit l'anxiété de l'opérateur.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: BIN TO BIN -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-b2b" class="section">
+  <div class="section-title">↔️ Bin to Bin — Propositions d'amélioration</div>
+  <div class="section-sub">Transferts inter-emplacements · Création tâches WH</div>
+
+  <div class="comparison">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Sélection initiale</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Bin to Bin</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Bin to Bin</h2></div>
+          <div style="padding:16px 12px;">
+            <div style="font-size:12px;color:#666;margin-bottom:12px;">Que souhaitez-vous traiter ?</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="background:#f5f7fa;border:1.5px solid #dde3ea;border-radius:10px;padding:16px;display:flex;align-items:center;gap:10px;">
+                <span style="font-size:20px;">📦</span>
+                <div>
+                  <div style="font-size:13px;font-weight:600;">Handling Unit</div>
+                  <div style="font-size:11px;color:#888;">Scanner ou saisir un HU</div>
+                </div>
+              </div>
+              <div style="background:#f5f7fa;border:1.5px solid #dde3ea;border-radius:10px;padding:16px;display:flex;align-items:center;gap:10px;">
+                <span style="font-size:20px;">🏭</span>
+                <div>
+                  <div style="font-size:13px;font-weight:600;">Emplacement (Bin)</div>
+                  <div style="font-size:11px;color:#888;">Scanner ou saisir un bin</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:16px;background:#e8f4fd;border-radius:8px;padding:12px;font-size:11px;color:#1a5fa8;">
+              💡 Vous pouvez mémoriser votre choix favori
+            </div>
+          </div>
+          <div style="padding:0 12px;margin-top:auto;">
+            <div style="background:#e0e5ee;padding:12px;border-radius:10px;text-align:center;font-size:12px;color:#555;">✕ Fermer</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Choix nécessaire à chaque fois</span>
+        <span class="pain-tag">⚠ Mémorisation peu visible</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Scan direct (mode mémorisé)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Bin to Bin</span><span class="wifi">📶 En ligne</span></div>
+          <div class="app-header app-header-orange">
+            <h2>Transfert stock</h2>
+            <div class="sub">Mode : HU · Modif. ⚙</div>
+          </div>
+          <!-- big scan -->
+          <div class="big-scan" style="margin:16px 12px;background:linear-gradient(135deg,#d9600a,#9e440a);">
+            <div class="scan-icon">📷</div>
+            <h3>Scanner le HU à déplacer</h3>
+            <p>Ou saisir le numéro ci-dessous</p>
+          </div>
+          <!-- search -->
+          <div class="search-wrap">
+            <div class="search-box">
+              <span>🔍</span>
+              <input placeholder="HU-XXXXXXXX" />
+            </div>
+          </div>
+          <!-- history -->
+          <div class="divider"><span>Récents</span></div>
+          <div class="card-list" style="padding-top:4px;">
+            <div class="del-card ok" style="padding:10px 12px;">
+              <div class="row">
+                <span class="doc-num">HU-10045678</span>
+                <span style="font-size:10px;color:#888;">il y a 2h</span>
+              </div>
+              <div class="supplier">REF-8821 · A-01-B-05 → B-03-C-12</div>
+            </div>
+            <div class="del-card ok" style="padding:10px 12px;">
+              <div class="row">
+                <span class="doc-num">HU-10045651</span>
+                <span style="font-size:10px;color:#888;">hier</span>
+              </div>
+              <div class="supplier">REF-2210 · C-01-A-01 → Stock</div>
+            </div>
+          </div>
+          <div style="padding:12px;">
+            <button class="btn-ghost">⚙️ Changer mode (Bin / HU / Article)</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Mode mémorisé affiché en haut</span>
+        <span class="gain-tag">✓ Scan en premier plan immédiat</span>
+        <span class="gain-tag">✓ Historique rapide</span>
+        <span class="gain-tag">✓ 0 tap avant scan</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #1 — Mode mémorisé, 0 tap avant scan</strong>
+    L'application retient le dernier mode utilisé (HU / Bin / Article) et démarre directement dessus.
+    L'opérateur voit immédiatement la zone de scan. Le mode actif est affiché discrètement en haut avec un lien "Modifier".
+    Un historique des 3 derniers transferts permet de répéter rapidement une action similaire.
+  </div>
+
+  <!-- DESTINATION -->
+  <div class="comparison" style="margin-top:32px;">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Destination bin</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Bin to Bin</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Destination Bin</h2></div>
+          <div class="form-section">
+            <div class="field-group">
+              <div class="field-label">Destination automatique</div>
+              <div style="background:#e0e5ee;border-radius:8px;padding:12px;text-align:center;font-size:12px;">🎯 Utiliser destination auto</div>
+            </div>
+            <div style="text-align:center;font-size:11px;color:#888;padding:8px 0;">— ou —</div>
+            <div class="field-group">
+              <div class="field-label">Storage Type</div>
+              <input class="field-input" type="text" placeholder="Saisir storage type…" />
+            </div>
+            <div class="field-group">
+              <div class="field-label">Storage Bin</div>
+              <input class="field-input" type="text" placeholder="Saisir ou scanner bin…" />
+            </div>
+          </div>
+          <div class="action-bar">
+            <div style="background:#0057B8;color:#fff;padding:14px;border-radius:10px;text-align:center;font-size:13px;font-weight:600;">Valider →</div>
+            <div style="background:#f5f7fa;color:#555;padding:12px;border-radius:10px;text-align:center;font-size:12px;">Retour</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Destination auto peu visible</span>
+        <span class="pain-tag">⚠ 2 champs séparés à saisir</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Destination intelligente</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Bin to Bin · Étape 3/4</span><span>●●●○</span></div>
+          <div class="app-header app-header-orange">
+            <div class="back">‹ Quantité</div>
+            <h2>Destination</h2>
+          </div>
+          <!-- suggested -->
+          <div style="margin:12px 12px 8px;background:#e8f8ef;border:2px solid #1a8754;border-radius:14px;padding:14px;">
+            <div style="font-size:10px;font-weight:700;color:#1a8754;text-transform:uppercase;margin-bottom:6px;">✨ Destination suggérée</div>
+            <div style="font-size:20px;font-weight:800;color:#1a1a2e;">B-03-C-12</div>
+            <div style="font-size:11px;color:#666;margin-top:2px;">Zone B · Rack 3 · Niveau C · Position 12</div>
+            <div style="margin-top:10px;">
+              <button class="btn-success" style="width:100%;padding:14px;font-size:13px;">✅ Utiliser cette destination</button>
+            </div>
+          </div>
+          <div class="divider"><span>Ou choisir autre destination</span></div>
+          <!-- scan -->
+          <div style="margin:0 12px;background:#f5f7fa;border:2px dashed #ccc;border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:24px;">📷</div>
+            <div style="font-size:12px;font-weight:600;color:#555;margin-top:6px;">Scanner un emplacement</div>
+          </div>
+          <div class="search-wrap" style="margin:8px 12px;padding:0;border:none;">
+            <div class="search-box">
+              <span>🔍</span>
+              <input placeholder="Saisir bin de destination…" />
+            </div>
+          </div>
+          <div style="padding:0 12px 12px;">
+            <button class="btn-ghost">Retour</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Destination suggérée en évidence</span>
+        <span class="gain-tag">✓ Validation en 1 tap (cas fréquent)</span>
+        <span class="gain-tag">✓ Alternative scan disponible</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #2 — Destination suggérée par le système</strong>
+    Quand SAP EWM peut calculer automatiquement une destination (mise au stock, rangement spécifique),
+    cette destination est affichée <b>en grand et en vert</b>, avec un bouton unique "Utiliser cette destination".
+    Dans la majorité des cas, l'opérateur valide en 1 tap. Si besoin, il peut toujours scanner ou saisir une autre destination.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB: INVENTAIRE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-inv" class="section">
+  <div class="section-title">🔢 Inventaire — Propositions d'amélioration</div>
+  <div class="section-sub">Comptage physique · Documents d'inventaire · Validation</div>
+
+  <div class="comparison">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Liste des documents</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Inventory Counting</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Inventory Counting</h2></div>
+          <div style="padding:8px 12px;background:#f5f7fa;border-bottom:1px solid #eee;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1;background:#e0e5ee;border-radius:6px;padding:6px 8px;font-size:11px;color:#666;">📅 Plage dates</div>
+              <div style="background:#e0e5ee;border-radius:6px;padding:6px 8px;font-size:11px;color:#666;">🔍 Filtre avancé</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1;background:#e0e5ee;border-radius:6px;padding:6px 8px;font-size:11px;color:#666;">⇅ Trier</div>
+              <div style="background:#e0e5ee;border-radius:6px;padding:6px 8px;font-size:11px;color:#666;">🔄 Rafraîchir</div>
+            </div>
+          </div>
+          <div class="card-list">
+            <div class="del-card" style="border-left:none;">
+              <div class="doc-num">IV-20250610-001</div>
+              <div class="supplier">Zone A · 12 emplacements</div>
+            </div>
+            <div class="del-card" style="border-left:none;">
+              <div class="doc-num">IV-20250610-002</div>
+              <div class="supplier">Zone B · 8 emplacements</div>
+            </div>
+          </div>
+          <div style="padding:8px 12px;">
+            <div style="background:#f5f7fa;border-radius:8px;padding:10px;font-size:11px;color:#888;">Mode Items (liste items) ▾</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Pas de progression visible</span>
+        <span class="pain-tag">⚠ 4 filtres à manipuler</span>
+        <span class="pain-tag">⚠ Scan bin pas direct</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Liste avec progression</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Inventaire</span><span class="wifi">📶 En ligne</span></div>
+          <div class="app-header app-header-purple">
+            <h2>Comptage Inventaire</h2>
+            <div class="sub">Session du 26/03/2026</div>
+          </div>
+          <!-- global progress -->
+          <div style="background:#fff;padding:12px 14px;border-bottom:1px solid #eee;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:6px;">
+              <span>Progression globale</span><span>8 / 20 bins comptés</span>
+            </div>
+            <div class="progress-bar" style="height:8px;"><div class="progress-fill fill-blue" style="width:40%"></div></div>
+          </div>
+          <!-- scan -->
+          <div style="margin:10px 12px;background:#f0f0ff;border:2px dashed #6f42c1;border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;">
+            <span style="font-size:28px;">📷</span>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#6f42c1;">Scanner un emplacement</div>
+              <div style="font-size:10px;color:#888;">Accès direct au comptage</div>
+            </div>
+          </div>
+          <div class="card-list" style="padding-top:4px;">
+            <div class="del-card" style="border-left:4px solid #6f42c1;">
+              <div class="row">
+                <span class="doc-num">IV-001 · Zone A</span>
+                <span class="badge-s badge-partial">12 bins</span>
+              </div>
+              <div class="progress-mini">
+                <div class="label"><span>Comptés</span><span>5 / 12</span></div>
+                <div class="progress-bar"><div class="progress-fill fill-blue" style="width:42%"></div></div>
+              </div>
+            </div>
+            <div class="del-card ok">
+              <div class="row">
+                <span class="doc-num">IV-002 · Zone B</span>
+                <span class="badge-s badge-done">✅ Terminé</span>
+              </div>
+              <div class="progress-mini">
+                <div class="label"><span>Comptés</span><span>8 / 8</span></div>
+                <div class="progress-bar"><div class="progress-fill fill-green" style="width:100%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Progression globale visible</span>
+        <span class="gain-tag">✓ Scan direct vers comptage</span>
+        <span class="gain-tag">✓ Barre progression par doc</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #1 — Progression et scan direct</strong>
+    Une barre de progression globale en haut montre l'avancement de toute la session d'inventaire.
+    Chaque document affiche sa propre barre de progression.
+    Un opérateur peut directement scanner un bin pour atterrir sur le bon écran de comptage,
+    sans naviguer dans la liste.
+  </div>
+
+  <!-- COUNTING SCREEN -->
+  <div class="comparison" style="margin-top:32px;">
+    <div>
+      <div class="comp-label">⚠️ Écran actuel — Saisie du comptage</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Inventory</span><span class="wifi">●●●</span></div>
+          <div class="app-header"><h2>Counting</h2></div>
+          <div class="form-section">
+            <div class="field-group">
+              <div class="field-label">Bin</div>
+              <div class="field-val">A-01-B-05</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Product</div>
+              <div class="field-val">MAT-0001234</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Quantity counted</div>
+              <input class="field-input" type="number" placeholder="0" style="font-size:22px;text-align:center;" />
+            </div>
+            <div class="field-group">
+              <div class="field-label">Unit</div>
+              <div class="field-val">EA</div>
+            </div>
+          </div>
+          <div class="action-bar">
+            <div style="background:#0057B8;color:#fff;padding:14px;border-radius:10px;text-align:center;font-size:13px;font-weight:600;">Valider comptage</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="pain-tag">⚠ Qté attendue non visible</span>
+        <span class="pain-tag">⚠ Pas de comparaison live</span>
+        <span class="pain-tag">⚠ Clavier numérique petit</span>
+      </div>
+    </div>
+    <div>
+      <div class="comp-label new-label">✅ Proposition — Comptage avec comparaison live</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Inventaire · Bin 6/12</span><span>⬜⬜⬜⬜⬜●</span></div>
+          <div class="app-header app-header-purple">
+            <div class="back">‹ IV-001 · Zone A</div>
+            <h2>Comptage</h2>
+          </div>
+          <!-- bin + product -->
+          <div class="count-display">
+            <div class="bin-id">A-01-B-05</div>
+            <div class="product">MAT-0001234 · Produit Exemple A</div>
+            <div class="expected">Quantité théorique : <b>50 EA</b></div>
+          </div>
+          <!-- big qty input -->
+          <div style="text-align:center;padding:12px;">
+            <div style="font-size:11px;color:#888;margin-bottom:4px;">Quantité comptée</div>
+            <div style="font-size:52px;font-weight:800;color:#0057B8;line-height:1;">50</div>
+            <div style="margin-top:6px;font-size:12px;color:#1a8754;font-weight:600;">✓ Correspond au stock théorique</div>
+          </div>
+          <!-- numpad visual -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 16px;">
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">1</div>
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">2</div>
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">3</div>
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">4</div>
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">5</div>
+            <div style="background:#f0f4ff;border-radius:10px;padding:14px;text-align:center;font-size:18px;font-weight:700;color:#0057B8;">6</div>
+          </div>
+          <div class="action-bar" style="padding-top:8px;">
+            <button class="btn-success">✅ Valider — Bin suivant ›</button>
+            <button class="btn-ghost" style="color:#e63946;">⚠️ Signaler écart</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Qté théorique affichée</span>
+        <span class="gain-tag">✓ Comparaison live (vert/rouge)</span>
+        <span class="gain-tag">✓ Clavier numérique XXL</span>
+        <span class="gain-tag">✓ "Bin suivant" automatique</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Amélioration clé #2 — Comparaison en temps réel</strong>
+    La quantité théorique est toujours affichée à côté de la quantité saisie.
+    Un indicateur coloré (vert = OK / rouge = écart) donne un retour instantané.
+    Le clavier numérique est grand et tactile.
+    Après validation, l'application passe <b>automatiquement au bin suivant</b> sans retour à la liste (gain de temps considérable en inventaire physique).
+  </div>
+</div>
+
+<script>
+function showTab(name) {
+  // hide all sections
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  // activate button
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
