@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Sorties Diverses (ADGI) · EWM Mobile</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+  /* ── COULEUR APP ── */
+  :root {
+    --adgi: #7B1FA2;        /* Violet distinctif = "sortie spéciale" */
+    --adgi-dark: #4A148C;
+    --adgi-light: #F3E5F5;
+    --adgi-mid: #CE93D8;
+  }
+
+  /* ── PAGE LAYOUT ── */
+  .page-header { background: linear-gradient(135deg, var(--adgi) 0%, var(--adgi-dark) 100%);
+    color: white; padding: 32px 40px; }
+  .page-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .page-header p  { margin-top: 6px; font-size: 14px; opacity: .85; }
+  .badge { display:inline-block; background:rgba(255,255,255,.18); border-radius:20px;
+           padding:3px 12px; font-size:12px; margin-top:8px; margin-right:6px; }
+
+  /* ── NAV TABS ── */
+  .nav-tabs { display:flex; gap:4px; background:#fff; padding:12px 40px 0;
+              border-bottom:2px solid #e8ecf0; overflow-x:auto; }
+  .nav-tab  { padding:10px 20px; font-size:13px; font-weight:600; cursor:pointer;
+              border-radius:8px 8px 0 0; color:#666; transition:all .2s;
+              white-space:nowrap; border:none; background:none; }
+  .nav-tab:hover  { background:#f5e8ff; color:var(--adgi); }
+  .nav-tab.active { background:var(--adgi); color:white; }
+
+  /* ── SECTION ── */
+  .section { display:none; padding:40px; }
+  .section.active { display:block; }
+  .section-title { font-size:20px; font-weight:700; color:var(--adgi); margin-bottom:6px; }
+  .section-sub   { font-size:13px; color:#666; margin-bottom:28px; }
+
+  /* ── PRINCIPLE CARDS ── */
+  .principles { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:32px; }
+  .principle  { background:#fff; border-radius:12px; padding:20px; border-left:4px solid var(--adgi);
+                box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  .principle .icon { font-size:24px; margin-bottom:10px; }
+  .principle h4    { font-size:13px; font-weight:700; color:var(--adgi); margin-bottom:4px; }
+  .principle p     { font-size:12px; color:#555; line-height:1.5; }
+
+  /* ── FLOW GRID ── */
+  .flow-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; margin-bottom:32px; }
+  .flow-card { background:#fff; border-radius:16px; padding:20px;
+               box-shadow:0 2px 12px rgba(0,0,0,.07); border-top:4px solid var(--adgi); }
+  .flow-card.blue   { border-top-color: #0057B8; }
+  .flow-card h3 { font-size:14px; font-weight:700; color:#1a1a2e; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .flow-card ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .flow-card li { font-size:12px; color:#444; display:flex; align-items:flex-start; gap:8px; line-height:1.5; }
+  .flow-card li::before { content:'→'; color:var(--adgi); font-weight:700; flex-shrink:0; }
+  .flow-card.blue li::before { color:#0057B8; }
+
+  /* ── COMPARISON GRID ── */
+  .comparison { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:20px; }
+  .screens-row { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:20px; }
+  .screen-col { flex:1; min-width:260px; }
+  .comp-label { font-size:11px; font-weight:700; text-transform:uppercase;
+                letter-spacing:1px; color:#999; margin-bottom:10px; }
+  .comp-label.new-label { color:var(--adgi); }
+  .comp-label.flow-label { color:#0057B8; }
+  .improvement-note { background:var(--adgi-light); border-left:4px solid var(--adgi);
+                      border-radius:0 8px 8px 0; padding:14px 18px;
+                      font-size:13px; color:#3a0060; margin-top:16px; margin-bottom:28px; line-height:1.6; }
+  .improvement-note strong { display:block; margin-bottom:4px; color:var(--adgi); font-size:12px; }
+  .info-note { background:#e3f2fd; border-left:4px solid #0057B8; border-radius:0 8px 8px 0;
+               padding:14px 18px; font-size:13px; color:#1a3a5c; margin-top:16px; margin-bottom:28px; line-height:1.6; }
+  .info-note strong { display:block; margin-bottom:4px; color:#0057B8; font-size:12px; }
+
+  /* ── PDA FRAME ── */
+  .pda { width:300px; min-height:560px; background:#1e2432; border-radius:28px; padding:10px;
+         box-shadow:0 8px 32px rgba(0,0,0,.25); margin:0 auto; }
+  .pda-screen { background:#fff; border-radius:20px; overflow:hidden;
+                min-height:540px; display:flex; flex-direction:column; }
+  .pda-wide { width:340px; }
+
+  /* ── STATUS BAR ── */
+  .status-bar { background:var(--adgi); color:white; padding:6px 14px;
+                display:flex; justify-content:space-between; align-items:center; font-size:10px; }
+  .status-bar .wifi { opacity:.8; }
+
+  /* ── APP HEADER ── */
+  .app-header { background:var(--adgi); color:white; padding:10px 14px 14px; }
+  .app-header .back { font-size:11px; opacity:.8; margin-bottom:2px; cursor:pointer; display:flex; align-items:center; gap:4px; }
+  .app-header h2 { font-size:16px; font-weight:700; }
+  .app-header .sub { font-size:11px; opacity:.75; margin-top:2px; }
+
+  /* ── STEP INDICATOR ── */
+  .steps { display:flex; align-items:center; padding:12px 16px; gap:0; background:#f5f7fa; border-bottom:1px solid #e8ecf0; }
+  .step { display:flex; flex-direction:column; align-items:center; flex:1; }
+  .step .dot { width:24px; height:24px; border-radius:50%; background:#e0e5ee;
+               display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#888; }
+  .step .dot.done   { background:#2dc653; color:white; }
+  .step .dot.active { background:var(--adgi); color:white; }
+  .step .step-lbl   { font-size:9px; color:#888; margin-top:4px; text-align:center; }
+  .step-line { flex:1; height:2px; background:#e0e5ee; margin-bottom:16px; }
+  .step-line.done { background:#2dc653; }
+
+  /* ── SEARCH / SCAN ── */
+  .search-wrap { padding:10px 12px; background:#fff; border-bottom:1px solid #eee; }
+  .search-box  { display:flex; align-items:center; gap:8px; background:#f0f2f7;
+                 border-radius:10px; padding:8px 12px; }
+  .search-box span { font-size:14px; }
+  .search-box input { border:none; background:transparent; font-size:12px; flex:1; outline:none; color:#333; }
+  .scan-btn { background:var(--adgi); color:#fff; border:none; border-radius:8px;
+              padding:8px 12px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; }
+
+  /* ── BIG SCAN AREA ── */
+  .big-scan { margin:16px 12px; background:linear-gradient(135deg,var(--adgi),var(--adgi-dark));
+              border-radius:16px; padding:20px; text-align:center; color:white; cursor:pointer; }
+  .big-scan .scan-icon { font-size:36px; margin-bottom:8px; }
+  .big-scan h3 { font-size:14px; font-weight:700; }
+  .big-scan p  { font-size:11px; opacity:.8; margin-top:4px; }
+  .big-scan-or { text-align:center; font-size:11px; color:#aaa; margin:8px 0; }
+
+  /* ── MODE SELECTOR (home screen) ── */
+  .mode-grid { display:flex; flex-direction:column; gap:10px; padding:16px 12px; flex:1; }
+  .mode-btn  { display:flex; align-items:center; gap:14px; background:#fff;
+               border:2px solid #e0e5ee; border-radius:16px; padding:16px 14px; cursor:pointer; }
+  .mode-btn:hover { border-color:var(--adgi); background:var(--adgi-light); }
+  .mode-btn .mode-icon { width:48px; height:48px; border-radius:14px; background:var(--adgi-light);
+                         display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+  .mode-btn .mode-icon.blue { background:#dbeafe; }
+  .mode-btn .mode-text h4 { font-size:13px; font-weight:700; color:#1a1a2e; }
+  .mode-btn .mode-text p  { font-size:11px; color:#888; margin-top:3px; line-height:1.4; }
+  .mode-btn .chevron { margin-left:auto; font-size:18px; color:#ccc; flex-shrink:0; }
+
+  /* ── TYPE DE MOUVEMENT (chips) ── */
+  .mvt-grid { display:flex; flex-direction:column; gap:8px; padding:12px; }
+  .mvt-btn  { display:flex; align-items:center; gap:12px; background:#fff;
+              border:2px solid #e0e5ee; border-radius:14px; padding:14px 12px; cursor:pointer; }
+  .mvt-btn.selected { border-color:var(--adgi); background:var(--adgi-light); }
+  .mvt-btn .mvt-icon { width:40px; height:40px; border-radius:12px; flex-shrink:0;
+                       display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .mvt-icon.cc     { background:#e3f2fd; }
+  .mvt-icon.scrap  { background:#fce4ec; }
+  .mvt-icon.damage { background:#fff3e0; }
+  .mvt-icon.other  { background:#f3e5f5; }
+  .mvt-btn h4 { font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:2px; }
+  .mvt-btn p  { font-size:11px; color:#888; line-height:1.4; }
+  .mvt-radio  { width:20px; height:20px; border-radius:50%; border:2px solid #dde;
+                margin-left:auto; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .mvt-radio.sel { background:var(--adgi); border-color:var(--adgi); color:white; font-size:11px; }
+
+  /* ── HU CONTENT CARD ── */
+  .hu-card { background:var(--adgi-light); border:1.5px solid var(--adgi-mid);
+             border-radius:14px; margin:10px 12px; padding:12px; }
+  .hu-card .hu-id { font-size:15px; font-weight:800; color:var(--adgi); display:flex; align-items:center; gap:6px; }
+  .hu-card .hu-meta { font-size:11px; color:#666; margin-top:4px; }
+
+  /* ── FORM FIELDS ── */
+  .form-section { padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .field-group  { display:flex; flex-direction:column; gap:4px; }
+  .field-label  { font-size:10px; font-weight:700; color:#888; text-transform:uppercase; letter-spacing:.5px; }
+  .field-val    { font-size:13px; font-weight:600; color:#1a1a2e; padding:8px 12px;
+                  background:#f5f7fa; border-radius:8px; border:1.5px solid #e0e5ee; }
+  .field-input  { font-size:13px; padding:8px 12px; background:#fff; border-radius:8px;
+                  border:2px solid var(--adgi); outline:none; color:#1a1a2e; }
+  .field-input-gray { font-size:13px; padding:8px 12px; background:#fff; border-radius:8px;
+                      border:1.5px solid #ccd; outline:none; color:#666; }
+  .field-row    { display:flex; gap:8px; }
+  .field-row .field-group { flex:1; }
+
+  /* ── QUANTITY DISPLAY ── */
+  .qty-display { text-align:center; padding:16px 12px 8px; }
+  .qty-display .qty-big  { font-size:48px; font-weight:800; color:var(--adgi); line-height:1; }
+  .qty-display .qty-unit { font-size:14px; color:#888; margin-top:4px; }
+  .qty-btns { display:flex; gap:8px; padding:0 12px 12px; }
+  .qty-btn  { flex:1; padding:14px; border-radius:12px; border:none; font-size:20px; font-weight:700; cursor:pointer; }
+  .qty-minus { background:#ffe0e0; color:#c0392b; }
+  .qty-plus  { background:#d4edda; color:#155724; }
+  .qty-full  { background:var(--adgi); color:white; font-size:12px; border-radius:12px; padding:14px 8px; flex:.6; }
+
+  /* ── STOCK LIST ── */
+  .card-list { padding:10px 12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .stock-item { background:#fff; border-radius:12px; padding:12px 14px;
+                border:1.5px solid #e8ecf0; display:flex; align-items:center; gap:10px; cursor:pointer; }
+  .stock-item:hover { border-color:var(--adgi); background:var(--adgi-light); }
+  .stock-item.selected { border-color:var(--adgi); background:var(--adgi-light); }
+  .stock-item .mat-num { font-size:12px; font-weight:700; color:#1a1a2e; }
+  .stock-item .mat-desc{ font-size:11px; color:#888; margin-top:2px; }
+  .stock-item .qty-pill { background:var(--adgi); color:white; border-radius:20px;
+                          padding:4px 10px; font-size:12px; font-weight:700; white-space:nowrap; margin-left:auto; }
+  .stock-item .batch-tag { background:#f0f2f7; color:#555; border-radius:6px;
+                           padding:2px 6px; font-size:10px; margin-left:4px; }
+  .check-circle { width:22px; height:22px; border-radius:50%; border:2px solid #ccc; flex-shrink:0;
+                  display:flex; align-items:center; justify-content:center; }
+  .check-circle.checked { background:var(--adgi); border-color:var(--adgi); color:white; font-size:12px; }
+
+  /* ── BIN DISPLAY ── */
+  .bin-card { background:#f0f4ff; border-radius:12px; margin:10px 12px; padding:12px; display:flex; align-items:center; gap:10px; }
+  .bin-card .bin-icon { font-size:28px; }
+  .bin-card .bin-id   { font-size:16px; font-weight:800; color:#0057B8; }
+  .bin-card .bin-meta { font-size:11px; color:#666; margin-top:2px; }
+
+  /* ── RECAP CARD ── */
+  .recap-section { padding:12px; display:flex; flex-direction:column; gap:8px; }
+  .recap-row { display:flex; justify-content:space-between; align-items:center;
+               background:#fff; border-radius:10px; padding:10px 12px; border:1.5px solid #e8ecf0; }
+  .recap-row .r-label { font-size:11px; color:#888; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+  .recap-row .r-val   { font-size:13px; font-weight:700; color:#1a1a2e; }
+  .recap-row.highlight { border-color:var(--adgi); background:var(--adgi-light); }
+  .recap-row.highlight .r-val { color:var(--adgi); font-size:16px; }
+
+  /* ── ACTION BUTTONS ── */
+  .action-bar  { padding:12px; display:flex; flex-direction:column; gap:8px; margin-top:auto; }
+  .btn-primary { background:var(--adgi); color:white; border:none; border-radius:12px;
+                 padding:16px; font-size:14px; font-weight:700; cursor:pointer;
+                 display:flex; align-items:center; justify-content:center; gap:8px; }
+  .btn-secondary { background:var(--adgi-light); color:var(--adgi); border:1.5px solid var(--adgi);
+                   border-radius:12px; padding:14px; font-size:13px; font-weight:600;
+                   cursor:pointer; text-align:center; }
+  .btn-success { background:#1a8754; color:white; border:none; border-radius:12px;
+                 padding:16px; font-size:14px; font-weight:700; cursor:pointer; text-align:center; }
+  .btn-ghost   { background:#f5f7fa; color:#555; border:none; border-radius:12px;
+                 padding:12px; font-size:12px; cursor:pointer; text-align:center; }
+
+  /* ── TOAST ── */
+  .toast { background:#1a8754; color:white; margin:0 12px; border-radius:12px;
+           padding:14px 16px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .toast .t-title { font-size:14px; font-weight:800; }
+  .toast .t-sub   { font-size:11px; opacity:.85; margin-top:2px; }
+  .toast.error    { background:#e63946; }
+
+  /* ── DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:10px; padding:0 12px; margin:8px 0; }
+  .divider span { font-size:10px; color:#aaa; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:#e8ecf0; }
+
+  /* ── PAIN / GAIN TAGS ── */
+  .pain-tag { display:inline-flex; align-items:center; gap:4px; background:#ffe0e0;
+              color:#c0392b; border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; margin:3px; }
+  .gain-tag { display:inline-flex; align-items:center; gap:4px; background:#d4edda;
+              color:#155724; border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; margin:3px; }
+  .neutral  { display:inline-flex; align-items:center; gap:4px; background:#e8ecf0;
+              color:#555; border-radius:20px; padding:3px 10px; font-size:11px; margin:3px; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav { display:flex; background:#f8f9fc; border-top:1px solid #e8ecf0; }
+  .bnav-item  { flex:1; display:flex; flex-direction:column; align-items:center;
+                padding:8px 4px; font-size:9px; color:#aaa; gap:3px; cursor:pointer; }
+  .bnav-item.active { color:var(--adgi); }
+  .bnav-icon  { font-size:18px; }
+
+  /* ── SECTION TITLE STYLE ── */
+  .screen-group-title { font-size:16px; font-weight:700; color:#333; margin:28px 0 12px;
+                        padding-bottom:8px; border-bottom:2px solid var(--adgi-light);
+                        display:flex; align-items:center; gap:8px; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:700px){
+    .comparison,.screens-row { grid-template-columns:1fr; flex-direction:column; }
+    .section { padding:20px 16px; }
+  }
+
+  /* ── KEYBOARD HINT ── */
+  .key-hint { background:#f5f7fa; border-radius:8px; padding:6px 12px; font-size:11px; color:#888;
+              margin:0 12px 8px; text-align:center; border:1px dashed #dde3ea; }
+
+  /* ── QUANTITY KEYBOARD ── */
+  .num-kbd { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:0 12px 8px; }
+  .num-key { background:#f0f2f7; border:none; border-radius:10px; padding:14px 6px;
+             font-size:16px; font-weight:700; color:#333; cursor:pointer; text-align:center; }
+  .num-key.action { background:var(--adgi); color:white; }
+  .num-key.del    { background:#ffe0e0; color:#c0392b; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ PAGE HEADER ═══════════════════ -->
+<div class="page-header">
+  <h1>📱 Sorties Diverses — /SCWM/ADGI</h1>
+  <p>Proposition UX · Application mobile EWM · Sorties sur centre de coût, scrapping, mise au rebut</p>
+  <span class="badge">HRC Software · Mars 2026</span>
+  <span class="badge">2 flows : depuis HU · depuis emplacement</span>
+</div>
+
+<!-- ═══════════════════ NAV TABS ═══════════════════ -->
+<div class="nav-tabs">
+  <button class="nav-tab active"     onclick="showTab('overview')">🎯 Vue d'ensemble</button>
+  <button class="nav-tab"            onclick="showTab('home')">🏠 Accueil app</button>
+  <button class="nav-tab"            onclick="showTab('flow-hu')">📦 Flow HU</button>
+  <button class="nav-tab"            onclick="showTab('flow-bin')">🗂️ Flow Emplacement</button>
+  <button class="nav-tab"            onclick="showTab('confirm')">✅ Confirmation</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 1 : VUE D'ENSEMBLE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-overview" class="section active">
+  <div class="section-title">🎯 Sorties Diverses — Contexte &amp; Enjeux</div>
+  <div class="section-sub">Transaction /SCWM/ADGI · Sorties hors livraison : consommation interne, scrapping, dommages, ajustements</div>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="icon">⚡</div>
+      <h4>Choix du mode dès l'accueil</h4>
+      <p>L'opérateur choisit immédiatement entre <b>scan HU</b> ou <b>emplacement</b>. Zéro menu superflu, 1 tap pour démarrer.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">📷</div>
+      <h4>Scan-First partout</h4>
+      <p>Scan HU, scan emplacement, scan article, scan code centre de coût : toutes les saisies ont un bouton scan visible.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🎯</div>
+      <h4>Type de mouvement clair</h4>
+      <p>Icône + libellé pour chaque type (CC, Scrap, Rebut, Autre). Pas de codes à mémoriser pour l'opérateur.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🔢</div>
+      <h4>Quantité totale par défaut</h4>
+      <p>La quantité disponible est pré-saisie. Si sortie partielle, l'opérateur modifie uniquement ce qui change.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">🔍</div>
+      <h4>Récap avant confirmation</h4>
+      <p>Écran de synthèse obligatoire avant le POST : article, qté, mouvement, destination comptable. Évite les erreurs irréversibles.</p>
+    </div>
+    <div class="principle">
+      <div class="icon">✅</div>
+      <h4>Confirmation double</h4>
+      <p>Pour Scrap/Rebut : validation en 2 taps (intention + confirmation explicite) car opération irréversible.</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:32px;">🗺️ Les deux flows applicatifs</div>
+  <div class="section-sub">Deux points d'entrée, même logique de fin de parcours</div>
+
+  <div class="flow-grid">
+    <div class="flow-card">
+      <h3>📦 Flow A — Depuis une HU</h3>
+      <ul>
+        <li><b>Étape 1</b> — Scanner ou saisir le code HU</li>
+        <li><b>Étape 2</b> — Visualiser le contenu HU (articles, lots, qtés)</li>
+        <li><b>Étape 3</b> — Choisir le type de mouvement (CC / Scrap / Rebut / Autre)</li>
+        <li><b>Étape 4</b> — Saisir le paramètre (CC, motif de rebut...)</li>
+        <li><b>Étape 5</b> — Confirmer la quantité (totale ou partielle)</li>
+        <li><b>Étape 6</b> — Récapitulatif → Valider → POST</li>
+      </ul>
+    </div>
+    <div class="flow-card blue">
+      <h3>🗂️ Flow B — Depuis un emplacement</h3>
+      <ul>
+        <li><b>Étape 1</b> — Scanner ou saisir l'emplacement</li>
+        <li><b>Étape 2</b> — Voir le stock de l'emplacement → sélectionner l'article</li>
+        <li><b>Étape 3</b> — Choisir le type de mouvement</li>
+        <li><b>Étape 4</b> — Saisir le paramètre (CC, motif)</li>
+        <li><b>Étape 5</b> — Confirmer la quantité</li>
+        <li><b>Étape 6</b> — Récapitulatif → Valider → POST</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-note">
+    <strong>ℹ️ Correspondance SAP EWM /SCWM/ADGI</strong>
+    Cette app mobile remplace la transaction ADGI bureau pour les opérations terrain. Les types de mouvements proposés correspondent aux catégories paramétrées dans l'entrepôt : <b>sortie centre de coût (ZCC)</b>, <b>mise au rebut (ZRB)</b>, <b>scrap qualité (ZSQ)</b>, <b>perte/damage (ZDG)</b>. L'accès aux lots (batch), aux types de stock spéciaux et aux UGI peut être activé selon le paramétrage client.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 2 : ACCUEIL APP -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-home" class="section">
+  <div class="section-title">🏠 Écran d'accueil — Choix du mode de sortie</div>
+  <div class="section-sub">Premier écran après ouverture de l'application · Point d'entrée des deux flows</div>
+
+  <div class="screens-row">
+    <!-- ÉCRAN ACCUEIL -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Accueil — Choix du mode</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sorties Diverses</span><span class="wifi">📶 En ligne</span></div>
+          <div class="app-header">
+            <h2>Sortie de stock</h2>
+            <div class="sub">Choisir le mode de sortie</div>
+          </div>
+
+          <div class="mode-grid">
+            <div style="font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.6px;font-weight:700;margin-bottom:4px;">Par quoi commencer ?</div>
+
+            <div class="mode-btn">
+              <div class="mode-icon">📦</div>
+              <div class="mode-text">
+                <h4>Depuis une HU</h4>
+                <p>Scanner ou saisir l'identifiant d'une unité de gestion</p>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+
+            <div class="mode-btn">
+              <div class="mode-icon blue">🗂️</div>
+              <div class="mode-text">
+                <h4>Depuis un emplacement</h4>
+                <p>Scanner un emplacement et choisir l'article dans le stock</p>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+
+            <div class="divider" style="margin-top:8px;"><span>Accès rapide</span></div>
+
+            <div class="mode-btn" style="border-color:#f0a060;background:#fffaf5;">
+              <div class="mode-icon" style="background:#fff3e0;">📋</div>
+              <div class="mode-text">
+                <h4>Historique des sorties</h4>
+                <p>Voir les sorties postées aujourd'hui</p>
+              </div>
+              <div class="chevron" style="color:#f0a060;">›</div>
+            </div>
+          </div>
+
+          <div style="padding:12px;">
+            <div style="background:#f5f7fa;border-radius:12px;padding:12px;font-size:11px;color:#888;text-align:center;line-height:1.6;">
+              🏭 Entrepôt : <b style="color:#333;">WH01</b> &nbsp;|&nbsp; Utilisateur : <b style="color:#333;">JDUPONT</b>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="bnav-item active"><div class="bnav-icon">📤</div>Sortie</div>
+            <div class="bnav-item"><div class="bnav-icon">📋</div>Histo.</div>
+            <div class="bnav-item"><div class="bnav-icon">⚙️</div>Config</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ 2 modes visibles immédiatement</span>
+        <span class="gain-tag">✓ Accès historique</span>
+        <span class="gain-tag">✓ Contexte entrepôt visible</span>
+      </div>
+    </div>
+
+    <!-- HISTORIQUE -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Historique du jour</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sorties Diverses · Histo.</span><span class="wifi">📶</span></div>
+          <div class="app-header">
+            <div class="back">‹ Accueil</div>
+            <h2>Sorties du jour</h2>
+            <div class="sub">Jeudi 26 mars 2026 · 4 sorties postées</div>
+          </div>
+
+          <div class="card-list">
+            <div style="background:#fff;border-radius:12px;padding:12px;border:1.5px solid #e8ecf0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12px;font-weight:700;color:#1a1a2e;">MAT-00045678</span>
+                <span style="background:#fce4ec;color:#880e4f;border-radius:10px;padding:2px 8px;font-size:10px;font-weight:700;">🗑️ Scrap</span>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:2px;">Câble 2,5mm² · 10 ML</div>
+              <div style="font-size:10px;color:#aaa;margin-top:4px;">10:32 · Empl. ZONE-B-12 · par JDUPONT</div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:12px;border:1.5px solid #e8ecf0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12px;font-weight:700;color:#1a1a2e;">HU-0000045231</span>
+                <span style="background:#e3f2fd;color:#0057B8;border-radius:10px;padding:2px 8px;font-size:10px;font-weight:700;">🏢 C. Coût</span>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:2px;">Gants de protection · 24 PR · CC-4100</div>
+              <div style="font-size:10px;color:#aaa;margin-top:4px;">09:15 · HU scanné · par MMARTIN</div>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:12px;border:1.5px solid #e8ecf0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12px;font-weight:700;color:#1a1a2e;">MAT-00078900</span>
+                <span style="background:#fff3e0;color:#e65100;border-radius:10px;padding:2px 8px;font-size:10px;font-weight:700;">⚠️ Dommage</span>
+              </div>
+              <div style="font-size:11px;color:#888;margin-top:2px;">Carton A4 · 2 PCE</div>
+              <div style="font-size:10px;color:#aaa;margin-top:4px;">08:44 · Empl. DOCK-01 · par JDUPONT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Traçabilité immédiate</span>
+        <span class="gain-tag">✓ Correction rapide si erreur</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Principe UX — Accueil orienté action</strong>
+    Dès l'ouverture, l'opérateur voit les 2 seuls choix possibles, sans navigation supplémentaire.
+    L'accès à l'historique du jour permet de vérifier rapidement qu'une sortie a bien été postée et d'agir en cas d'erreur.
+    La barre du bas permettra d'ajouter de futures fonctions (ex. scan rapide depuis n'importe quel écran).
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 3 : FLOW HU -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-flow-hu" class="section">
+  <div class="section-title">📦 Flow A — Sortie depuis une HU</div>
+  <div class="section-sub">5 étapes · Scan HU → Contenu → Type de mouvement → Paramètres → Quantité → Récapitulatif</div>
+
+  <!-- ÉTAPE 1 : SCAN HU -->
+  <div class="screen-group-title">📷 Étape 1 — Scanner la HU</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Scan de la HU (entrée)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · HU</span><span class="wifi">📶</span></div>
+          <div class="app-header">
+            <div class="back">‹ Accueil</div>
+            <h2>Identifier la HU</h2>
+            <div class="sub">Étape 1 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot active">1</div><div class="step-lbl">HU</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">2</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <div class="big-scan">
+            <div class="scan-icon">📷</div>
+            <h3>Scanner la HU</h3>
+            <p>Pointer le lecteur sur le code-barres de l'unité de gestion</p>
+          </div>
+
+          <div class="big-scan-or">— ou saisir manuellement —</div>
+
+          <div class="form-section" style="padding-top:0;">
+            <div class="field-group">
+              <div class="field-label">Numéro HU</div>
+              <div style="display:flex;gap:8px;">
+                <input class="field-input" style="flex:1;" placeholder="HU-0000000000" />
+                <button class="scan-btn" style="padding:8px 14px;">📷</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="key-hint">💡 Le scan déclenche automatiquement la recherche</div>
+
+          <div class="action-bar">
+            <button class="btn-ghost">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : CONTENU HU + TYPE MOUVEMENT -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Étape 2 — Contenu HU &amp; Choix du mouvement</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · HU</span><span>HU-0000045231</span></div>
+          <div class="app-header">
+            <div class="back">‹ Scan HU</div>
+            <h2>Contenu &amp; Mouvement</h2>
+            <div class="sub">Étape 2 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HU</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">2</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <!-- HU Info -->
+          <div class="hu-card">
+            <div class="hu-id">📦 HU-0000045231</div>
+            <div class="hu-meta">Emplacement : ZONE-A-04 &nbsp;|&nbsp; Type : Palette</div>
+            <div style="margin-top:8px;background:#fff;border-radius:8px;padding:8px;font-size:11px;">
+              <div style="font-weight:700;color:#1a1a2e;margin-bottom:4px;">Contenu</div>
+              <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f0;"><span style="color:#444;">MAT-00034521 · Gants de protection</span><span style="font-weight:700;color:var(--adgi);">24 PR</span></div>
+            </div>
+          </div>
+
+          <!-- Type de mouvement -->
+          <div style="padding:8px 12px 4px;font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;">Type de sortie</div>
+          <div class="mvt-grid" style="padding-top:4px;">
+            <div class="mvt-btn selected">
+              <div class="mvt-icon cc">🏢</div>
+              <div>
+                <h4>Centre de coût</h4>
+                <p>Consommation interne · Mouvement ZCC</p>
+              </div>
+              <div class="mvt-radio sel">✓</div>
+            </div>
+            <div class="mvt-btn">
+              <div class="mvt-icon scrap">🗑️</div>
+              <div>
+                <h4>Mise au rebut / Scrap</h4>
+                <p>Destruction définitive · Mouvement ZRB</p>
+              </div>
+              <div class="mvt-radio"></div>
+            </div>
+            <div class="mvt-btn">
+              <div class="mvt-icon damage">⚠️</div>
+              <div>
+                <h4>Dommage</h4>
+                <p>Marchandise endommagée · Mouvement ZDG</p>
+              </div>
+              <div class="mvt-radio"></div>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary">Suivant — Paramètres ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Contenu HU lu automatiquement après le scan</strong>
+    Dès que la HU est scannée, le système affiche immédiatement son contenu (article, lot, quantité, emplacement courant).
+    Le choix du type de mouvement est présenté avec des icônes lisibles — pas de codes à retenir pour l'opérateur.
+    Le type "Centre de coût" est pré-sélectionné car c'est le plus fréquent (configurable par client).
+  </div>
+
+  <!-- ÉTAPE 3 : PARAMÈTRES -->
+  <div class="screen-group-title">⚙️ Étape 3 — Paramètres selon le type de mouvement</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Paramètres — Centre de coût (ZCC)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Paramètres</span><span>CC</span></div>
+          <div class="app-header">
+            <div class="back">‹ Type mouvement</div>
+            <h2>Centre de coût</h2>
+            <div class="sub">Étape 3 / 5 · Mouvement ZCC</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HU</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">3</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <div class="form-section" style="margin-top:8px;">
+            <div style="background:#e3f2fd;border-radius:12px;padding:10px;font-size:11px;color:#0057B8;">
+              🏢 Sortie pour consommation interne — saisir le centre de coût destinataire
+            </div>
+            <div class="field-group">
+              <div class="field-label">Centre de coût *</div>
+              <div style="display:flex;gap:8px;">
+                <input class="field-input" style="flex:1;" placeholder="ex : CC-4100" value="CC-4100" />
+                <button class="scan-btn" style="padding:8px 14px;">📷</button>
+              </div>
+              <div style="font-size:10px;color:#888;margin-top:3px;">💡 Scanner le code-barres du CC ou saisir manuellement</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Libellé CC (lecture seule)</div>
+              <div class="field-val">Maintenance · Département MRO</div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Compte G/L (optionnel)</div>
+              <input class="field-input-gray" placeholder="Laisser vide = compte par défaut" />
+            </div>
+            <div class="field-group">
+              <div class="field-label">Texte / commentaire (optionnel)</div>
+              <input class="field-input-gray" placeholder="ex : Consommation chantier N°12" />
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary">Suivant — Quantité ›</button>
+            <button class="btn-ghost">‹ Retour</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Paramètres — Mise au rebut / Scrap (ZRB)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Paramètres</span><span>SCRAP</span></div>
+          <div class="app-header">
+            <div class="back">‹ Type mouvement</div>
+            <h2>Mise au rebut</h2>
+            <div class="sub">Étape 3 / 5 · Mouvement ZRB</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HU</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">3</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <div class="form-section" style="margin-top:8px;">
+            <div style="background:#fce4ec;border-radius:12px;padding:10px;font-size:11px;color:#880e4f;display:flex;align-items:flex-start;gap:8px;">
+              <span style="font-size:16px;">⚠️</span>
+              <span>Opération <b>irréversible</b> — Le stock sera définitivement sorti du système. Une confirmation supplémentaire sera demandée.</span>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Motif de rebut *</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--adgi);border-radius:10px;padding:10px 12px;cursor:pointer;">
+                  <span style="font-size:16px;">📅</span><span style="font-size:12px;font-weight:600;flex:1;">Dépassement date limite</span>
+                  <span style="color:var(--adgi);">●</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;background:#f5f7fa;border:1.5px solid #e0e5ee;border-radius:10px;padding:10px 12px;cursor:pointer;">
+                  <span style="font-size:16px;">🔨</span><span style="font-size:12px;color:#666;flex:1;">Dommage physique</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;background:#f5f7fa;border:1.5px solid #e0e5ee;border-radius:10px;padding:10px 12px;cursor:pointer;">
+                  <span style="font-size:16px;">🧪</span><span style="font-size:12px;color:#666;flex:1;">Non-conformité qualité</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;background:#f5f7fa;border:1.5px solid #e0e5ee;border-radius:10px;padding:10px 12px;cursor:pointer;">
+                  <span style="font-size:16px;">📝</span><span style="font-size:12px;color:#666;flex:1;">Autre (texte libre)</span>
+                </div>
+              </div>
+            </div>
+            <div class="field-group">
+              <div class="field-label">Commentaire (optionnel)</div>
+              <input class="field-input-gray" placeholder="Préciser si nécessaire…" />
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary" style="background:#c62828;">Suivant — Quantité ›</button>
+            <button class="btn-ghost">‹ Retour</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Paramètres adaptés au type de mouvement</strong>
+    Chaque type de mouvement affiche uniquement ses paramètres propres : le centre de coût pour ZCC, le motif de rebut pour ZRB.
+    Pour les mouvements irréversibles (scrap, rebut), un bandeau rouge met en garde l'opérateur dès cette étape.
+    Le motif de rebut est présenté sous forme de liste cliquable (pas de code SAP à saisir).
+  </div>
+
+  <!-- ÉTAPE 4 : QUANTITÉ -->
+  <div class="screen-group-title">🔢 Étape 4 — Quantité à sortir</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Saisie de la quantité (cas sortie totale)</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Quantité</span><span>HU-0000045231</span></div>
+          <div class="app-header">
+            <div class="back">‹ Paramètres</div>
+            <h2>Quantité à sortir</h2>
+            <div class="sub">Étape 4 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HU</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <!-- Article récap -->
+          <div style="background:#f5f7fa;margin:10px 12px;border-radius:12px;padding:10px 12px;font-size:11px;">
+            <div style="font-weight:700;color:#1a1a2e;">MAT-00034521 · Gants de protection</div>
+            <div style="color:#888;margin-top:2px;">Stock HU : <b style="color:var(--adgi);">24 PR</b> &nbsp;|&nbsp; 🏢 CC-4100</div>
+          </div>
+
+          <!-- Qté -->
+          <div class="qty-display">
+            <div class="qty-big">24</div>
+            <div class="qty-unit">PR — paire(s)</div>
+          </div>
+          <div class="qty-btns">
+            <button class="qty-btn qty-minus">−</button>
+            <button class="qty-btn qty-full">TOUT<br/>24 PR</button>
+            <button class="qty-btn qty-plus">+</button>
+          </div>
+
+          <!-- Clavier numérique -->
+          <div class="num-kbd">
+            <button class="num-key">7</button><button class="num-key">8</button><button class="num-key">9</button>
+            <button class="num-key">4</button><button class="num-key">5</button><button class="num-key">6</button>
+            <button class="num-key">1</button><button class="num-key">2</button><button class="num-key">3</button>
+            <button class="num-key">.</button><button class="num-key">0</button><button class="num-key del">⌫</button>
+          </div>
+
+          <div class="action-bar" style="padding-top:4px;">
+            <button class="btn-primary">Suivant — Récapitulatif ›</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Quantité totale pré-saisie</span>
+        <span class="gain-tag">✓ Bouton TOUT proéminent</span>
+        <span class="gain-tag">✓ Clavier numérique intégré</span>
+      </div>
+    </div>
+
+    <!-- RÉCAPITULATIF -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Étape 5 — Récapitulatif avant POST</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Récapitulatif</span><span>✓ Prêt</span></div>
+          <div class="app-header">
+            <div class="back">‹ Quantité</div>
+            <h2>Récapitulatif</h2>
+            <div class="sub">Étape 5 / 5 · Vérifier avant de valider</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">HU</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Param.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <div class="recap-section">
+            <div class="recap-row">
+              <span class="r-label">🆔 HU source</span>
+              <span class="r-val">HU-0000045231</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">📦 Article</span>
+              <span class="r-val" style="font-size:12px;text-align:right;">MAT-00034521<br/><span style="font-size:10px;color:#888;font-weight:500;">Gants de protection</span></span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🔄 Mouvement</span>
+              <span class="r-val" style="display:flex;align-items:center;gap:6px;"><span style="background:#e3f2fd;color:#0057B8;border-radius:8px;padding:2px 8px;font-size:11px;">ZCC</span> Centre de coût</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🏢 Centre de coût</span>
+              <span class="r-val">CC-4100</span>
+            </div>
+            <div class="recap-row highlight">
+              <span class="r-label">🔢 Quantité</span>
+              <span class="r-val">24 PR</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">📍 Empl. source</span>
+              <span class="r-val">ZONE-A-04</span>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-success" style="font-size:15px;">✅ Valider la sortie</button>
+            <button class="btn-secondary">✏️ Modifier</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="gain-tag">✓ Toutes les données visibles</span>
+        <span class="gain-tag">✓ Correction possible avant POST</span>
+        <span class="gain-tag">✓ Double confirmation scrap</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 4 : FLOW EMPLACEMENT -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-flow-bin" class="section">
+  <div class="section-title">🗂️ Flow B — Sortie depuis un emplacement</div>
+  <div class="section-sub">5 étapes · Scan emplacement → Sélection article → Type de mouvement → Paramètres → Quantité → Récapitulatif</div>
+
+  <!-- ÉTAPE 1 : SCAN EMPLACEMENT -->
+  <div class="screen-group-title">📍 Étape 1 — Identifier l'emplacement</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label flow-label">Flow B · Étape 1 — Scan emplacement</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Empl.</span><span class="wifi">📶</span></div>
+          <div class="app-header">
+            <div class="back">‹ Accueil</div>
+            <h2>Identifier l'emplacement</h2>
+            <div class="sub">Étape 1 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot active">1</div><div class="step-lbl">Empl.</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">2</div><div class="step-lbl">Article</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <div class="big-scan" style="background:linear-gradient(135deg,#0057B8,#003d82);">
+            <div class="scan-icon">📍</div>
+            <h3>Scanner l'emplacement</h3>
+            <p>Pointer le lecteur sur l'étiquette de l'emplacement</p>
+          </div>
+
+          <div class="big-scan-or">— ou saisir manuellement —</div>
+
+          <div class="form-section" style="padding-top:0;">
+            <div class="field-group">
+              <div class="field-label">Code emplacement</div>
+              <div style="display:flex;gap:8px;">
+                <input class="field-input" style="flex:1;border-color:#0057B8;" placeholder="ex : ZONE-A-04" />
+                <button class="scan-btn" style="background:#0057B8;padding:8px 14px;">📷</button>
+              </div>
+            </div>
+
+            <!-- Emplacements récents -->
+            <div style="font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;">Emplacements récents</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;background:#f5f7fa;border:1.5px solid #e0e5ee;border-radius:10px;padding:8px 12px;cursor:pointer;">
+                <span>📍</span><span style="font-size:12px;font-weight:600;">ZONE-A-04</span><span style="font-size:10px;color:#888;margin-left:auto;">il y a 5 min</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;background:#f5f7fa;border:1.5px solid #e0e5ee;border-radius:10px;padding:8px 12px;cursor:pointer;">
+                <span>📍</span><span style="font-size:12px;font-weight:600;">DOCK-01</span><span style="font-size:10px;color:#888;margin-left:auto;">hier</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-ghost">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : LISTE DU STOCK -->
+    <div class="screen-col">
+      <div class="comp-label flow-label">Flow B · Étape 2 — Stock de l'emplacement</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Stock</span><span>ZONE-B-12</span></div>
+          <div class="app-header">
+            <div class="back">‹ Emplacement</div>
+            <h2>Choisir l'article</h2>
+            <div class="sub">Étape 2 / 5 · ZONE-B-12 · 4 articles</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Empl.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">2</div><div class="step-lbl">Article</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">3</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <!-- Bin info -->
+          <div class="bin-card">
+            <div class="bin-icon">🗂️</div>
+            <div>
+              <div class="bin-id">ZONE-B-12</div>
+              <div class="bin-meta">Zone B · Rangée 12 · 4 articles en stock</div>
+            </div>
+          </div>
+
+          <!-- Recherche rapide -->
+          <div class="search-wrap" style="padding:8px 12px;">
+            <div class="search-box">
+              <span>🔍</span>
+              <input placeholder="Rechercher article ou lot…" />
+              <button class="scan-btn" style="background:#0057B8;">📷</button>
+            </div>
+          </div>
+
+          <!-- Liste stock -->
+          <div class="card-list">
+            <div class="stock-item selected">
+              <div class="check-circle checked">✓</div>
+              <div style="flex:1;">
+                <div class="mat-num">MAT-00045678</div>
+                <div class="mat-desc">Câble 2,5mm² isolé<span class="batch-tag">Lot : BT-2024-99</span></div>
+              </div>
+              <div class="qty-pill">150 ML</div>
+            </div>
+            <div class="stock-item">
+              <div class="check-circle"></div>
+              <div style="flex:1;">
+                <div class="mat-num">MAT-00012300</div>
+                <div class="mat-desc">Connecteur RJ45 CAT6</div>
+              </div>
+              <div class="qty-pill">45 PCE</div>
+            </div>
+            <div class="stock-item">
+              <div class="check-circle"></div>
+              <div style="flex:1;">
+                <div class="mat-num">MAT-00078900</div>
+                <div class="mat-desc">Carton d'emballage A4</div>
+              </div>
+              <div class="qty-pill">200 PCE</div>
+            </div>
+            <div class="stock-item">
+              <div class="check-circle"></div>
+              <div style="flex:1;">
+                <div class="mat-num">MAT-00099012</div>
+                <div class="mat-desc">Étiquette adhésive blanche</div>
+              </div>
+              <div class="qty-pill">500 PCE</div>
+            </div>
+          </div>
+
+          <div class="action-bar" style="padding-top:4px;">
+            <button class="btn-primary">Suivant — Type de mouvement ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-note">
+    <strong>💡 Emplacements récents et scan direct</strong>
+    L'opérateur retrouve rapidement ses emplacements fréquents grâce à la liste des récents.
+    Sur l'écran de stock, le scan d'un code article sélectionne automatiquement la ligne correspondante,
+    sans avoir à défiler dans la liste. Les lots sont visibles directement sur la carte article.
+  </div>
+
+  <!-- ÉTAPE 3 + 4 CONDENSÉES -->
+  <div class="screen-group-title">⚙️ Étapes 3 à 5 — Mouvement, Paramètres, Quantité, Récap.</div>
+  <div class="screens-row">
+    <div class="screen-col">
+      <div class="comp-label flow-label">Flow B · Étape 3 — Type de mouvement</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Mouvement</span><span>MAT-00045678</span></div>
+          <div class="app-header">
+            <div class="back">‹ Stock</div>
+            <h2>Type de sortie</h2>
+            <div class="sub">Étape 3 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Empl.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Article</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">3</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <!-- Article sélectionné -->
+          <div style="background:#f5f7fa;margin:10px 12px;border-radius:12px;padding:10px 12px;font-size:11px;">
+            <div style="font-weight:700;color:#1a1a2e;">MAT-00045678 · Câble 2,5mm²</div>
+            <div style="color:#888;margin-top:2px;">Emplacement : <b>ZONE-B-12</b> &nbsp;|&nbsp; Stock : <b style="color:var(--adgi);">150 ML</b></div>
+          </div>
+
+          <div class="mvt-grid">
+            <div class="mvt-btn">
+              <div class="mvt-icon cc">🏢</div>
+              <div><h4>Centre de coût</h4><p>Consommation interne · ZCC</p></div>
+              <div class="mvt-radio"></div>
+            </div>
+            <div class="mvt-btn selected">
+              <div class="mvt-icon scrap">🗑️</div>
+              <div><h4>Mise au rebut</h4><p>Destruction définitive · ZRB</p></div>
+              <div class="mvt-radio sel">✓</div>
+            </div>
+            <div class="mvt-btn">
+              <div class="mvt-icon damage">⚠️</div>
+              <div><h4>Dommage</h4><p>Marchandise endommagée · ZDG</p></div>
+              <div class="mvt-radio"></div>
+            </div>
+            <div class="mvt-btn">
+              <div class="mvt-icon other">📋</div>
+              <div><h4>Autre</h4><p>Autre motif paramétré</p></div>
+              <div class="mvt-radio"></div>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary" style="background:#c62828;">Suivant — Quantité ›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-col">
+      <div class="comp-label flow-label">Flow B · Étapes 4+5 — Qté &amp; Récap. condensés</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar"><span>Sortie · Récapitulatif</span><span>✓ Prêt</span></div>
+          <div class="app-header">
+            <div class="back">‹ Mouvement</div>
+            <h2>Quantité &amp; Récap.</h2>
+            <div class="sub">Étapes 4-5 / 5</div>
+          </div>
+          <div class="steps">
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Empl.</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Article</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot done">✓</div><div class="step-lbl">Mvt</div></div>
+            <div class="step-line done"></div>
+            <div class="step"><div class="dot active">4</div><div class="step-lbl">Qté</div></div>
+            <div class="step-line"></div>
+            <div class="step"><div class="dot">5</div><div class="step-lbl">Récap.</div></div>
+          </div>
+
+          <!-- Qté compact -->
+          <div style="background:#fce4ec;margin:10px 12px;border-radius:12px;padding:10px;text-align:center;">
+            <div style="font-size:11px;color:#880e4f;font-weight:600;">⚠️ Mise au rebut — Câble 2,5mm² · ZONE-B-12</div>
+          </div>
+
+          <div class="qty-display" style="padding:10px 12px 4px;">
+            <div class="qty-big" style="font-size:40px;color:#c62828;">10</div>
+            <div class="qty-unit">ML — mètre(s) linéaires</div>
+            <div style="font-size:10px;color:#aaa;margin-top:2px;">Stock disponible : 150 ML</div>
+          </div>
+          <div class="qty-btns">
+            <button class="qty-btn qty-minus">−</button>
+            <button class="qty-btn" style="background:#c62828;color:white;font-size:11px;flex:.6;">TOUT<br/>150 ML</button>
+            <button class="qty-btn qty-plus">+</button>
+          </div>
+
+          <div class="recap-section" style="padding-top:0;">
+            <div class="recap-row">
+              <span class="r-label">📍 Emplacement</span><span class="r-val">ZONE-B-12</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">📦 Article</span>
+              <span class="r-val" style="font-size:12px;text-align:right;">MAT-00045678<br/><span style="font-size:10px;color:#888;font-weight:500;">Câble 2,5mm²</span></span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🗑️ Mouvement</span>
+              <span class="r-val" style="display:flex;align-items:center;gap:6px;"><span style="background:#fce4ec;color:#880e4f;border-radius:8px;padding:2px 8px;font-size:11px;">ZRB</span> Mise au rebut</span>
+            </div>
+            <div class="recap-row highlight" style="border-color:#c62828;background:#fce4ec;">
+              <span class="r-label">🔢 Quantité</span>
+              <span class="r-val" style="color:#c62828;">10 ML</span>
+            </div>
+          </div>
+
+          <div class="action-bar" style="padding-top:0;">
+            <button class="btn-primary" style="background:#c62828;font-size:15px;">🗑️ Confirmer la mise au rebut</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- TAB 5 : CONFIRMATION -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="tab-confirm" class="section">
+  <div class="section-title">✅ Écrans de confirmation &amp; gestion des erreurs</div>
+  <div class="section-sub">Retours visuels après POST · Succès, double-confirmation scrap, erreur</div>
+
+  <div class="screens-row">
+    <!-- SUCCÈS CC -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Confirmation — Sortie CC postée avec succès</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar" style="background:#1a8754;"><span>✅ Sortie confirmée</span><span>10:47</span></div>
+          <div class="app-header" style="background:#1a8754;">
+            <h2>Sortie postée !</h2>
+            <div class="sub">Document SAP créé avec succès</div>
+          </div>
+
+          <div style="text-align:center;padding:24px 20px 12px;">
+            <div style="font-size:56px;margin-bottom:8px;">✅</div>
+            <div style="font-size:18px;font-weight:800;color:#1a8754;">Sortie validée</div>
+            <div style="font-size:12px;color:#888;margin-top:6px;">Document EWM : <b style="color:#1a1a2e;">DI-2026-012847</b></div>
+          </div>
+
+          <div class="recap-section">
+            <div class="recap-row">
+              <span class="r-label">📦 Article</span>
+              <span class="r-val" style="font-size:12px;">MAT-00034521</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🔢 Qté sortie</span>
+              <span class="r-val" style="color:#1a8754;">24 PR</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">🏢 Centre coût</span>
+              <span class="r-val">CC-4100</span>
+            </div>
+            <div class="recap-row">
+              <span class="r-label">⏰ Heure POST</span>
+              <span class="r-val">10:47:32</span>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-success">📤 Nouvelle sortie</button>
+            <button class="btn-secondary" style="font-size:12px;">📋 Voir l'historique</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOUBLE CONFIRMATION SCRAP -->
+    <div class="screen-col">
+      <div class="comp-label new-label">✅ Double confirmation — Mise au rebut</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar" style="background:#c62828;"><span>⚠️ Confirmation requise</span><span></span></div>
+          <div class="app-header" style="background:#c62828;">
+            <div class="back">‹ Récapitulatif</div>
+            <h2>Confirmer la mise au rebut</h2>
+            <div class="sub">Action irréversible — vérifier avant de valider</div>
+          </div>
+
+          <div style="padding:16px 12px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:10px;">🗑️</div>
+            <div style="font-size:14px;font-weight:700;color:#c62828;margin-bottom:6px;">Cette opération est irréversible</div>
+            <div style="font-size:12px;color:#666;line-height:1.6;">Le stock sera définitivement retiré du système. Aucune annulation possible après validation.</div>
+          </div>
+
+          <div class="recap-section">
+            <div class="recap-row" style="border-color:#c62828;background:#fce4ec;">
+              <span class="r-label">📦 Article</span>
+              <span class="r-val" style="font-size:12px;color:#c62828;">MAT-00045678</span>
+            </div>
+            <div class="recap-row" style="border-color:#c62828;background:#fce4ec;">
+              <span class="r-label">🔢 Qté à scrapper</span>
+              <span class="r-val" style="color:#c62828;font-size:18px;">10 ML</span>
+            </div>
+            <div class="recap-row" style="border-color:#c62828;background:#fce4ec;">
+              <span class="r-label">📍 Emplacement</span>
+              <span class="r-val" style="color:#c62828;">ZONE-B-12</span>
+            </div>
+          </div>
+
+          <div style="margin:0 12px 8px;background:#fff3e0;border-radius:10px;padding:10px;font-size:11px;color:#e65100;">
+            💡 Motif sélectionné : <b>Dépassement date limite</b>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary" style="background:#c62828;font-size:15px;">🗑️ Oui, mettre au rebut</button>
+            <button class="btn-secondary" style="color:#c62828;border-color:#c62828;">Annuler — Revenir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERREUR -->
+    <div class="screen-col">
+      <div class="comp-label" style="color:#c0392b;">⚠️ Gestion d'erreur — Stock insuffisant</div>
+      <div class="pda">
+        <div class="pda-screen">
+          <div class="status-bar" style="background:#b71c1c;"><span>❌ Erreur</span><span></span></div>
+          <div class="app-header" style="background:#b71c1c;">
+            <div class="back">‹ Quantité</div>
+            <h2>Sortie impossible</h2>
+            <div class="sub">Vérifier les données saisies</div>
+          </div>
+
+          <div style="padding:16px 12px;text-align:center;">
+            <div style="font-size:40px;margin-bottom:10px;">❌</div>
+            <div style="font-size:14px;font-weight:700;color:#b71c1c;margin-bottom:6px;">Stock insuffisant</div>
+          </div>
+
+          <div style="margin:0 12px;background:#fce4ec;border-radius:14px;padding:16px;">
+            <div style="font-size:13px;font-weight:700;color:#b71c1c;margin-bottom:8px;">Détail de l'erreur SAP</div>
+            <div style="font-size:12px;color:#444;line-height:1.7;">
+              La quantité demandée <b>200 ML</b> dépasse le stock disponible.<br/>
+              Stock actuel : <b style="color:#b71c1c;">150 ML</b><br/>
+              Emplacement : ZONE-B-12
+            </div>
+          </div>
+
+          <div style="margin:12px;background:#fff3e0;border-radius:14px;padding:14px;font-size:12px;color:#e65100;line-height:1.6;">
+            💡 <b>Que faire ?</b><br/>
+            Corriger la quantité (max 150 ML) ou vérifier si du stock est disponible sur un autre emplacement.
+          </div>
+
+          <div class="action-bar">
+            <button class="btn-primary" style="background:#b71c1c;">✏️ Corriger la quantité</button>
+            <button class="btn-secondary" style="color:#b71c1c;border-color:#b71c1c;">📍 Changer d'emplacement</button>
+            <button class="btn-ghost">Annuler la sortie</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="improvement-note">
+    <strong>💡 Gestion des cas critiques</strong>
+    <b>Double confirmation</b> pour toute opération irréversible (scrap, mise au rebut) : l'opérateur doit confirmer deux fois, avec un rappel visuel fort du risque.<br/>
+    <b>Erreurs SAP claires</b> : pas de code d'erreur technique brut — le message est traduit en termes métier avec une action corrective proposée directement depuis l'écran d'erreur.<br/>
+    <b>Succès avec référence document</b> : le numéro du document EWM créé est affiché immédiatement pour traçabilité.
+  </div>
+</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+  function showTab(id){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    event.currentTarget.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
